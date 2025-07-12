@@ -1,0 +1,233 @@
+{
+  "main": {
+    "id": "09b2faa1204ca13b",
+    "type": "split",
+    "children": [
+      {
+        "id": "739e7783d0c6c42e",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "977d74d130d9eb27",
+            "type": "leaf",
+            "state": {
+              "type": "image",
+              "state": {
+                "file": "assets/img/rooms/skynet/burpsuite-sniper.png"
+              },
+              "icon": "lucide-image",
+              "title": "burpsuite-sniper"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "999a9efed16b184b",
+    "type": "split",
+    "children": [
+      {
+        "id": "aedd0dea1b50746b",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "5506193a03068a75",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "Search"
+            }
+          },
+          {
+            "id": "bb2695b5b7f347b4",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "Bookmarks"
+            }
+          },
+          {
+            "id": "b1734153f13f4785",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Files"
+            }
+          }
+        ],
+        "currentTab": 2
+      }
+    ],
+    "direction": "horizontal",
+    "width": 337.5
+  },
+  "right": {
+    "id": "1070f937490f78aa",
+    "type": "split",
+    "children": [
+      {
+        "id": "690c2a3aa5b701c5",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "451f04b9c0d2bfca",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "assets/img/rooms/skynet/burpsuite-sniper.png",
+                "collapseAll": true,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Backlinks for burpsuite-sniper"
+            }
+          },
+          {
+            "id": "68717671299f8154",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "assets/img/rooms/skynet/burpsuite-sniper.png",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": false
+              },
+              "icon": "links-going-out",
+              "title": "Outgoing links from burpsuite-sniper"
+            }
+          },
+          {
+            "id": "df6ca3dfd79c133e",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "Tags"
+            }
+          },
+          {
+            "id": "994a685228e8cde3",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "assets/img/rooms/skynet/burpsuite-sniper.png",
+                "followCursor": true,
+                "showSearch": true,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "Outline of burpsuite-sniper"
+            }
+          },
+          {
+            "id": "161dc7a52274c9d4",
+            "type": "leaf",
+            "state": {
+              "type": "git-view",
+              "state": {},
+              "icon": "git-pull-request",
+              "title": "Source Control"
+            }
+          }
+        ],
+        "currentTab": 4
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Open today's daily note": false,
+      "command-palette:Open command palette": false,
+      "omnisearch:Omnisearch": false,
+      "templates:Insert template": false,
+      "obsidian-git:Open Git source control": false
+    }
+  },
+  "active": "161dc7a52274c9d4",
+  "lastOpenFiles": [
+    "assets/img/rooms/skynet/miles-dyson-home-page.png",
+    "assets/img/rooms/skynet/Pasted image 20250710005441.png",
+    "assets/img/rooms/skynet/skynet.png",
+    "assets/img/rooms/skynet/skynet-banner.jpeg",
+    "assets/img/rooms/skynet/burpsuite-sniper.png",
+    "assets/img/rooms/game-zone/Pasted image 20250710010218.png",
+    "assets/img/rooms/game-zone/agent47.jpeg",
+    "assets/img/rooms/daily-bugle/joomla-template-page-reverse-shell.png",
+    "assets/img/rooms/daily-bugle/joomla-template-page.png",
+    "assets/img/rooms/daily-bugle/daily-bugle-card.png",
+    "assets/img/rooms/daily-bugle/daily-bugle-banner.png",
+    "_posts/2025-07-09-daily-bugle.md",
+    "_posts/2024-10-16-aes-in-rust.md",
+    "_posts/2025-07-07-basic-pentesting-room.md",
+    "_posts/2025-07-07-game-zone.md",
+    "_posts/2025-07-8-skynet.md",
+    "_posts/2025-07-10-cryptosystem.md",
+    "_posts/2025-07-12-this.md",
+    "_posts/2025-07-10-relevent.md",
+    "assets/img/rooms/temp",
+    "_posts/Untitledds.md",
+    "templates/template.md",
+    "templates",
+    "templates.md",
+    "Permanent Notes/Shells/Reverse Shells/Reverse Shells.md",
+    "Permanent Notes/Shells/Encrypted Shells/Encrypted Shells.md",
+    "Permanent Notes/Shells/Bind Shells/Netcat Bind Shell.md",
+    "Permanent Notes/Shells/Bind Shells/Bash Bind Shell.md",
+    "Untitled.canvas",
+    "Permanent Notes/Shells/Bind Shells/Bind Shells.md",
+    "Permanent Notes/Linux/Linux.md",
+    "Permanent Notes/Shells/Bind Shells/Socat Bind Shell.md",
+    "Permanent Notes/Shells/Encrypted Shells/Encrypted Socat Shell.md",
+    "Permanent Notes/Shells/Reverse Shells/Bash Reverse Shell.md",
+    "Permanent Notes/Shells/Shells.md",
+    "Permanent Notes/Shells/Shell Stabilisation/Shell Stabilisation.md",
+    "Permanent Notes/Shells/Shell Stabilisation/Python Shell Stabilisation.md",
+    "Permanent Notes/Shells/Reverse Shells/Socat Reverse Shell.md",
+    "Permanent Notes/Shells/Reverse Shells/Netcat Reverse Shell.md",
+    "Permanent Notes/Linux",
+    "Untitled 1.canvas",
+    "templtes/template.md~",
+    "Permanent Notes/Linux",
+    "evergreen/shells/shells.md~",
+    "Templates",
+    "evergreen/shells/shells-encrypted/shells-encrypted-socat.md~",
+    "Fleeting Notes",
+    "Literature Notes"
+  ]
+}
