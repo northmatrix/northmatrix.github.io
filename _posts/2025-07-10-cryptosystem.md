@@ -60,19 +60,18 @@ When two prime factors are close together we can write.
 
 Where $a$ is slightly larger than $\sqrt{n}$ and $b$ is small.
 
-We have now found $p$ and $q$ and can now calculate Eulers Totient
+We have now found $p$ and $q$ and can now calculate Eulers Totient.
 
 $$
 \phi(n) = (p-1) \times (q-1)
 $$
 
-From here, we compute the private key $d$ as the modular inverse of $e$ modulo n.
+From here, we compute the private key $d$ as the modular inverse of $e$ modulo $\phi(n)$
 
 $$
 d=e^{-1} \mod \phi(n)
 $$
 
-.  
 And finally we can compute the plaintext $s$ by raising $c$ to the power $d$ modulo $n$.
 
 $$
