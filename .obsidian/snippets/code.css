@@ -1,0 +1,20 @@
+/* Reading Mode (Preview) */
+.markdown-preview-view pre code {
+  font-size: 14px;
+}
+.markdown-preview-view code {
+  font-size: 13px;
+}
+
+/* Live Preview & Editor (Code blocks) */
+.HyperMD-codeblock {
+  font-family: "JetBrainsMono Nerd Font";
+  font-weight: 700;
+}
+
+/* Live Preview & Editor (Inline code) */
+.cm-s-obsidian span.cm-inline-code {
+  font-family: "JetBrainsMono Nerd Font";
+  font-weight: 700;
+}
+

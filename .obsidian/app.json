@@ -1,0 +1,23 @@
+{
+  "readableLineLength": false,
+  "spellcheck": false,
+  "showInlineTitle": true,
+  "focusNewTab": true,
+  "foldHeading": true,
+  "foldIndent": true,
+  "alwaysUpdateLinks": true,
+  "useMarkdownLinks": true,
+  "strictLineBreaks": false,
+  "propertiesInDocument": "visible",
+  "vimMode": true,
+  "showLineNumber": false,
+  "showIndentGuide": true,
+  "rightToLeft": false,
+  "useTab": true,
+  "livePreview": true,
+  "tabSize": 4,
+  "showUnsupportedFiles": false,
+  "attachmentFolderPath": "assets/img/rooms/rabbit-store",
+  "trashOption": "system",
+  "newFileLocation": "current"
+}

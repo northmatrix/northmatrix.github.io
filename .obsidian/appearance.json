@@ -1,0 +1,19 @@
+{
+  "cssTheme": "Tokyo Night",
+  "accentColor": "#ff8099",
+  "theme": "obsidian",
+  "textFontFamily": "JetBrainsMono Nerd Font",
+  "interfaceFontFamily": "JetBrainsMono Nerd Font",
+  "enabledCssSnippets": [
+    "math",
+    "codeblock",
+    "code",
+    "title"
+  ],
+  "baseFontSize": 14,
+  "showViewHeader": true,
+  "showRibbon": false,
+  "nativeMenus": false,
+  "baseFontSizeAction": false,
+  "monospaceFontFamily": "JetBrainsMono Nerd Font"
+}
