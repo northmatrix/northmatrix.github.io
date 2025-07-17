@@ -80,8 +80,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 337.5,
-    "collapsed": true
+    "width": 337.5
   },
   "right": {
     "id": "1070f937490f78aa",
@@ -183,7 +182,7 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "977d74d130d9eb27",
+  "active": "b1734153f13f4785",
   "lastOpenFiles": [
     "_posts/2025-07-13-rabbit-store.md~",
     "_posts/2025-07-13-rabbit-store.md",
