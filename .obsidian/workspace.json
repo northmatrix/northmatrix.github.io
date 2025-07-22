@@ -49,13 +49,13 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "_posts/2025-07-20-jack.md",
+                "file": "_posts/2025-07-22-ciphers-secret-message.md",
                 "mode": "source",
                 "source": false,
                 "backlinks": false
               },
               "icon": "lucide-file",
-              "title": "2025-07-20-jack"
+              "title": "2025-07-22-ciphers-secret-message"
             }
           }
         ],
@@ -117,7 +117,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 337.5
+    "width": 397.5
   },
   "right": {
     "id": "1070f937490f78aa",
@@ -221,6 +221,22 @@
   },
   "active": "48f8656084b635c0",
   "lastOpenFiles": [
+    "_site/posts/ciphers-secret-message/index.html",
+    "_site/posts/ciphers-secret-message",
+    "_site/assets/img/rooms/ciphers-secret-message/logo.png",
+    "_site/assets/img/rooms/ciphers-secret-message",
+    "_site/page2/index.html",
+    "_site/page2",
+    "_posts/2025-07-20-jack.md",
+    "_posts/2025-07-13-probe.md",
+    "_posts/2025-07-13-rabbit-store.md",
+    "_posts/2025-07-22-ciphers-secret-message.md",
+    "_posts/2025-07-13-mkingdom.md",
+    "_posts/2025-07-10-cryptosystem.md",
+    "_posts/2025-07-09-daily-bugle.md",
+    "_posts/2025-07-8-skynet.md",
+    "assets/img/rooms/ciphers-secret-message/logo.png",
+    "assets/img/rooms/ciphers-secret-message",
     "assets/img/rooms/jack/Pasted image 20250720145813.png",
     "_site/assets/img/rooms/jack/Pasted image 20250720160752.png",
     "_site/assets/img/rooms/jack/Pasted image 20250720153355.png",
@@ -229,30 +245,15 @@
     "_site/assets/img/rooms/jack/Pasted image 20250720152506.png",
     "_site/assets/img/rooms/jack/Pasted image 20250720152504.png",
     "_site/assets/img/rooms/jack/Pasted image 20250720151959.png",
-    "_site/assets/img/rooms/jack/Pasted image 20250720151825.png",
-    "_site/assets/img/rooms/jack/Pasted image 20250720151439.png",
-    "_site/assets/img/rooms/jack/Pasted image 20250720151105.png",
-    "_posts/2025-07-20-jack.md",
     "assets/img/rooms/jack",
-    "_posts/2025-07-13-rabbit-store.md",
-    "_posts/2025-07-13-probe.md",
     "_posts/2025-07-13-rabbit-store.md~",
     "_posts/2025-07-10-cryptosystem.md~",
     "vendor/bundle/ruby/3.4.0/bundler.lock",
     "Gemfile~",
     "_posts/2024-10-16-aes-in-rust.md",
-    "_posts/2025-07-09-daily-bugle.md",
-    "_posts/2025-07-8-skynet.md",
-    "_posts/2025-07-10-cryptosystem.md",
-    "_posts/2025-07-13-mkingdom.md",
     "_posts/2025-07-07-game-zone.md",
     "_posts/2025-07-07-basic-pentesting-room.md",
-    "_site/posts/rabbit-store/index.html",
-    "_site/posts/rabbit-store",
-    "_site/assets/img/rooms/rabbit-store",
-    "assets/img/rooms/rabbit-store",
     "templates/template.md",
-    "_site/templates/template.html",
     "vendor/bundle/ruby/3.4.0/gems/jekyll-theme-chirpy-7.3.0/README.md",
     "vendor/bundle/ruby/3.4.0/gems/jekyll-seo-tag-2.8.0/docs/usage.md",
     "vendor/bundle/ruby/3.4.0/gems/jekyll-seo-tag-2.8.0/docs/installation.md",
@@ -266,7 +267,6 @@
     "vendor/bundle/ruby/3.4.0/gems/jekyll-sitemap-1.4.0/spec/fixtures/_my_collection/this-has-non-standard-chars.md",
     "vendor/bundle/ruby/3.4.0/gems/jekyll-sitemap-1.4.0/spec/fixtures/_my_collection/custom_permalink_2.md",
     "vendor/bundle/ruby/3.4.0/gems/jekyll-sitemap-1.4.0/spec/fixtures/_my_collection/custom_permalink.md",
-    "vendor/bundle/ruby/3.4.0/gems/jekyll-sitemap-1.4.0/spec/fixtures/404.md",
     "Untitled.canvas",
     "Untitled 1.canvas"
   ]

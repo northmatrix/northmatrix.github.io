@@ -7,10 +7,10 @@ media_subpath: /assets/img/rooms/rabbit-store
 comments: true
 image:
   path: /logo.png
-  alt: A top hat 
+  alt: A top hat
 title: Rabbit Store
 tags: 
-date created: 2025‑07‑13 17:43:18 +01:00
+date created: 2025‑07‑16 17:43:18 +01:00
 date modified: 2025‑07‑16 18:22:15 +01:00
 ---
 
