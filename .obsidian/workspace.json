@@ -13,13 +13,13 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "_posts/2025-07-22-ciphers-secret-message.md",
+                "file": "_posts/2025-08-04-order.md",
                 "mode": "source",
                 "source": false,
                 "backlinks": false
               },
               "icon": "lucide-file",
-              "title": "2025-07-22-ciphers-secret-message"
+              "title": "2025-08-04-order"
             }
           }
         ]
@@ -185,12 +185,12 @@
   },
   "active": "b68f29ef8152633d",
   "lastOpenFiles": [
+    "_posts/2025-07-22-ciphers-secret-message.md",
     "assets/img/rooms/ciphers-secret-message/Pasted image 20250804174107.png",
     "_posts/2025-07-20-jack.md",
     "_posts/2025-08-04-order.md",
     "assets/img/rooms/order/Pasted image 20250804173859.png",
     "_posts/2025-07-09-daily-bugle.md",
-    "_posts/2025-07-22-ciphers-secret-message.md",
     "_posts/2025-07-13-rabbit-store.md",
     "assets/img/rooms/order/logo.png",
     "assets/img/rooms/order",
@@ -213,7 +213,6 @@
     "_site/assets/img/rooms/jack/Pasted image 20250720153355.png",
     "_site/assets/img/rooms/jack/Pasted image 20250720153333.png",
     "_site/assets/img/rooms/jack/Pasted image 20250720153130.png",
-    "_site/assets/img/rooms/jack/Pasted image 20250720152506.png",
     "assets/img/rooms/jack",
     "_posts/2025-07-13-rabbit-store.md~",
     "_posts/2024-10-16-aes-in-rust.md",
