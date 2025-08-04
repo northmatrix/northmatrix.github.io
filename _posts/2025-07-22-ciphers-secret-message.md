@@ -10,8 +10,14 @@ image:
 title: Ciphers Secret Message
 tags: 
 date created: 2025‑07‑22 17:43:18 +01:00
-date modified: 2025‑07‑22 14:34:39 +01:00
+date modified: 2025‑08‑04 17:41:08 +01:00
 ---
+
+## Overview
+
+![](Pasted%20image%2020250804174107.png)
+
+Ciphers Secret message is an easy ranked tryhackme room where we need to decrpyt some ciphertext to recover the plaintext.
 
 ## Code Analysis
 
