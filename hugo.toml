@@ -70,7 +70,7 @@ pagination.pagerSize = 5
   # see https://developer.twitter.com/en/docs/tweets/optimize-with-cards/guides/getting-started#card-and-content-attribution
   # do not include @
   creator = "nothmatrix"
-  site = "northmatrix.co.uk"
+  site = "northmatrix.github.io"
 
 [languages]
   [languages.en]
