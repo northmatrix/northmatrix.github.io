@@ -4,9 +4,12 @@
   --accent: #7aa2f7;
 }
 
-body,
-code,
-pre {
-  font-family: "JetBrains Mono", monospace;
+body {
+  font-family: "JetBrains Mono", monospace !important;
+}
+
+pre,
+code {
+  font-family: "JetBrains Mono", monospace !important;
   font-weight: 700;
 }

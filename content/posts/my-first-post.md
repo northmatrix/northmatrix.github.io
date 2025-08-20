@@ -2,12 +2,12 @@
 title = "My First Post"
 date = "2025-08-19T23:26:01+01:00"
 #dateFormat = "2006-01-02" # This value can be configured for per-post date formatting
-author = ""
+author = "Northmatrix"
 authorTwitter = "" #do not include @
-cover = ""
-tags = ["", ""]
-keywords = ["", ""]
-description = ""
+cover = "/img/cover.webp"
+#tags = ["", ""]
+#keywords = ["", ""]
+#description = ""
 showFullContent = false
 readingTime = false
 hideComments = false
