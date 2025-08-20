@@ -1,13 +1,12 @@
 :root {
   --background: #12131b;
   --foreground: #c0caf5;
-  --accent: #e0af68
+  --accent: #7aa2f7;
 }
-
 
 body,
 code,
-pre,
-.monospaced {
-  font-family: 'JetBrains Mono', monospace;
+pre {
+  font-family: "JetBrains Mono", monospace;
+  font-weight: 700;
 }
