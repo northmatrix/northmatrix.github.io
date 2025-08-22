@@ -1,21 +1,16 @@
 +++
-title = "My First Post"
+title = "AES ECB Implemented In Rust"
 date = "2025-08-19T23:26:01+01:00"
-#dateFormat = "2006-01-02" # This value can be configured for per-post date formatting
 author = "Northmatrix"
-authorTwitter = "" #do not include @
-cover = "/img/cover.webp"
-#tags = ["", ""]
-#keywords = ["", ""]
-#description = ""
-showFullContent = false
-readingTime = false
-hideComments = false
+tags = ["Crypto", "Rust"]
+description = "128 Bit AES EBC Implemented in the rust programming language"
+coverImg="cover.webp"
+readingTime = true
 +++
 
-## AES in Rust
+# AES in Rust
 
-### Intro
+## Introduction
 
 AES (advanced encryption standard) also known as Rijndael is a specification for the encryption of electronic data established by the US National institute of standards and technology NIST in 2001.  
 AES is a block cipher with a block size of 128 bits that supports 3 key sizes of length 128,192 and 256 bits.  
@@ -25,8 +20,7 @@ AES is used everywhere in information technology from SSH to HTTPS
 
 In this tutorial we will be implementing 128 bit Aes encryption
 
-> Do not use any untested encryption in production for a secure and tested alternative use [Aes-Gcm](https://crates.io/crates/aes-gcm)  
-{:.prompt-danger }
+> Do not use any untested encryption in production for a secure and tested alternative use [Aes-Gcm](https://crates.io/crates/aes-gcm)
 
 ## Encryption Overview
 
@@ -93,22 +87,11 @@ fn sub_bytes(state: &mut [u8;16]) {
 
 ### Shift Rows
 
-the **shift rows** operation can be represented as a map
+the **shift rows** operation can be represented as a map $M$ which transforms a $4 \times 4$ matrix, defined below:
 
-$$
- M
-$$
+$ M: \mathbb{B}^{4 \times 4} \to \mathbb{B}^{4 \times 4} $
 
-, which transforms a
-
-$$
- 4 \times 4
-$$
-
-matrix, defined below:
-
-- $ M: \mathbb{B}^{4 \times 4} \to \mathbb{B}^{4 \times 4} $
-- $ \mathbb{B} $ represents the set of binary digits.
+$ \mathbb{B} $ represents the set of binary digits.
 
 The map M takes a matrix, and transforms it cyclicly by shifting the ith rows i places to the left, this is shown below.
 
@@ -129,7 +112,6 @@ b_{15} & b_3 & b_7 & b_{11}
 \end{bmatrix}
 \end{aligned}
 $$
-
 
 this helps increase the complexity of the cipher by ensuring the influence of each byte is spread across multiple columns  
 this combined with the function mix_cols which will be covered later helps contribute to the diffusion of the cipher  
@@ -248,26 +230,35 @@ fn gal_mul(mut a: u8, mut b: u8) -> u8 {
 
 ### Explanation of Galios Multiplication Function Gal_Mul()
 
-- **Idea Behind Function**:  
-   The above function factors out x from the polynomial b(x) and multiplies it to a(x) this doesnt effect the result as:  
-   $ x \cdot a(x) \cdot x^{-1} \cdot b(x) = a(x)b(x) $  
-   So now  
-   $ a(x) = x \cdot a(x) $ And $ b(x) = x^{-1} \cdot b(x) $  
-   If a(x) ever exceeds degree 8 it is reduced modulo the polynomial `0x1b` i.e the reduction polynomial we looked at before  
-   This repeats until b(x) is no longer divisible by x which implies the polynomial is constant  
-   at this stage we can then add a(x) to the result and remove the 1 by performing a right shift on b(x)  
-   once b = 0 the result will return.
-- **Code Trace**:
-  1. $ a(x) = x^3+x^2 $, $ b(x) = x^2 + x $, $ r = 0 $
-  2. $ a(x) = x^4 + x^3 $, $ b(x) = x + 1 $, $ r = x^3+x^2 $
-  3. $ a(x) = x^5+ x^4 $, $ b(x) = 1 $, $ r = x^3 + x^2 + x^4 + x^3 $
-  4. $ a(x) = x^6+x^5 $, $ b(x) = 0 $, $ r = x^3 + x^2 + x^4 + x^3 + x^5 + x^4 $
-  5. $ b(x) = 0 $ so $ r $ is returned $ r = x^3 + x^2 + x^4 + x^3 +x^5 + x^4 = x^5 + (x^4 \oplus x^4) + (x^3 \oplus x^3) + x^2 = x^5 + 0 + 0 + x^2 = x^5 + x^2 $
+#### Idea Behind Function
+
+The above function factors out x from the polynomial b(x) and multiplies it to a(x) this doesnt effect the result as:
+
+$ x \cdot a(x) \cdot x^{-1} \cdot b(x) = a(x)b(x) $
+
+So now
+
+$ a(x) = x \cdot a(x) $ And $ b(x) = x^{-1} \cdot b(x) $
+
+If a(x) ever exceeds degree 8 it is reduced modulo the polynomial `0x1b` i.e the reduction polynomial we looked at before
+
+This repeats until b(x) is no longer divisible by x which implies the polynomial is constant
+
+at this stage we can then add a(x) to the result and remove the 1 by performing a right shift on b(x)
+
+once b = 0 the result will return.
+
+#### Code Trace
+
+1. $ a(x) = x^3+x^2 $, $ b(x) = x^2 + x $, $ r = 0 $
+2. $ a(x) = x^4 + x^3 $, $ b(x) = x + 1 $, $ r = x^3+x^2 $
+3. $ a(x) = x^5+ x^4 $, $ b(x) = 1 $, $ r = x^3 + x^2 + x^4 + x^3 $
+4. $ a(x) = x^6+x^5 $, $ b(x) = 0 $, $ r = x^3 + x^2 + x^4 + x^3 + x^5 + x^4 $
+5. $ b(x) = 0 $ so $ r $ is returned $ r = x^3 + x^2 + x^4 + x^3 +x^5 + x^4 = x^5 + (x^4 \oplus x^4) + (x^3 \oplus x^3) + x^2 = x^5 + 0 + 0 + x^2 = x^5 + x^2 $
 
 ## Now onto the Transformation
 
 Now that we have covered the finite field $ GF(2^8) $ we can continue to implement the transformation $ P $ which is defined below:
-
 
 $ P: \mathbb{B}^{4 \times 1} \to \mathbb{B}^{4 \times 1} $
 
@@ -344,40 +335,30 @@ In AES-128, the key schedule expands the initial 128-bit key into 11 round keys 
 
 The AES key schedule uses:
 
-1. **SubWord**: A function that applies the AES SBOX (non-linear substitution) to each byte of the word.
+**SubWord**: A function that applies the AES SBOX (non-linear substitution) to each byte of the word.
 
-$$
-\text{SubWord}(W) = \text{Sbox}(W)
-$$
+$\text{SubWord}(W) = \text{Sbox}(W)$
 
-2. **ShiftWord**: A function that cyclicaly rotates the bytes of a word left by one position.
+**ShiftWord**: A function that cyclicaly rotates the bytes of a word left by one position.
 
-$$
-\text{ShiftWord}([b_0, b_1, b_2, b_3]) = [b_1, b_2, b_3, b_0]
-$$
+$\text{ShiftWord}([b_0, b_1, b_2, b_3]) = [b_1, b_2, b_3, b_0]$
 
-3. **Round Constant (RCON)**: A constant that is XORed with a word.
+**Round Constant (RCON)**: A constant that is XORed with a word.
 
-$$
-RCON[i] = \text{[0x02}^{i-1}, 0x00, 0x00, 0x00]
-$$
+$RCON[i] = \text{[0x02}^{i-1}, 0x00, 0x00, 0x00]$
 
 ### Round Key Generation
 
-1. **Initial Words**: The first four words $W_0, W_1, W_2, W_3$ come directly from the original key $K$.
-2. **Next Words**: For $i = 4, 5, \dots, 43$:
+**Initial Words**: The first four words $W_0, W_1, W_2, W_3$ come directly from the original key $K$.
+**Next Words**: For $i = 4, 5, \dots, 43$:
 
-- If $i$ is a multiple of 4, calculate:
+If $i$ is a multiple of 4, calculate:
 
-$$
-W_i = W_{i-4} \oplus \text{SubWord}(\text{ShiftWord}(W_{i-1})) \oplus RCON[i/4]
-$$
+$W_i = W_{i-4} \oplus \text{SubWord}(\text{ShiftWord}(W_{i-1})) \oplus RCON[i/4]$
 
-- Otherwise:
+Otherwise:
 
-$$
-W_i = W_{i-4} \oplus W_{i-1}
-$$
+$W_i = W_{i-4} \oplus W_{i-1}$
 
 ```rust
 //Here is a pre-computed list that contains the first byte for each Round Constant
@@ -452,17 +433,28 @@ Fortunatley this is possible with minor adjustments to the normalfunctions, addi
 
 ### Add_key Inverse Proof
 
-The Add_key function simply performs Xor operation on each bit from the block with each bit of the key as both are 128 bits, so to prove this function is self invertible all we need to show is that xor itself is self invertible, this is shown below.  
-suppose b and k are both elements from the set {0,1}, then xor is represented below  
-$ b \oplus k $  
-now when we again xor b with k again we get the following  
-$ (b \oplus k) \oplus k $  
-since xor is associotive this is the same as the following  
-$ b \oplus (k \oplus k) $  
-but we know that anything value xored with itself is 0 so this is the same as  
-$ b \oplus 0 $  
-again using the above fact this is the same as  
-$ b $  
+The Add_key function simply performs Xor operation on each bit from the block with each bit of the key as both are 128 bits, so to prove this function is self invertible all we need to show is that xor itself is self invertible, this is shown below.
+
+suppose b and k are both elements from the set {0,1}, then xor is represented below
+
+$ b \oplus k $
+
+now when we again xor b with k again we get the following
+
+$ (b \oplus k) \oplus k $
+
+since xor is associotive this is the same as the following
+
+$ b \oplus (k \oplus k) $
+
+but we know that anything value xored with itself is 0 so this is the same as
+
+$ b \oplus 0 $
+
+again using the above fact this is the same as
+
+$ b $
+
 This proves that xor is self invertible and thus the add_key function
 
 Now we will begin implementing the inverse of the functions specified above.
@@ -661,4 +653,3 @@ mod tests {
     }
 }
 ```
-

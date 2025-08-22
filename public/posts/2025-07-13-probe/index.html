@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  
+    <title>Probe :: northmatrix</title>
+  
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Overview This is an easy rated tryhackme room focused on active and passive enumeration techniques.
+Initial Enumeration I begin with an aggressive nmap scan targeting all ports on the server.
+root@ip-10-10-191-190:~# nmap -sT -T5 -A -p- 10.10.205.139 Starting Nmap 7.80 ( https://nmap.org ) at 2025-07-13 15:24 BST Nmap scan report for ip-10-10-205-139.eu-west-1.compute.internal (10.10.205.139) Host is up (0.00085s latency). Not shown: 65527 closed ports PORT STATE SERVICE VERSION 22/tcp open ssh OpenSSH 8.2p1 Ubuntu 4ubuntu0.7 (Ubuntu Linux; protocol 2.0) 80/tcp open http lighttpd 1.4.55 |_http-server-header: lighttpd/1.4.55 |_http-title: 403 Forbidden 443/tcp open ssl/http Apache httpd 2.4.41 |_http-server-header: Apache/2.4.41 (Ubuntu) |_http-title: 403 Forbidden | ssl-cert: Subject: commonName=dev.probe.thm/organizationName=Tester/stateOrProvinceName=Some-State/countryName=US | Not valid before: 2023-07-18T10:57:05 |_Not valid after: 2024-07-17T10:57:05 | tls-alpn: |_ http/1.1 1338/tcp open ftp vsftpd 2.0.8 or later 1443/tcp open ssl/http Apache httpd 2.4.41 ((Ubuntu)) |_http-server-header: Apache/2.4.41 (Ubuntu) |_http-title: PHP 7.4.3-4ubuntu2.19 - phpinfo() | ssl-cert: Subject: commonName=dev.probe.thm/organizationName=Tester/stateOrProvinceName=Some-State/countryName=US | Not valid before: 2023-07-18T10:57:05 |_Not valid after: 2024-07-17T10:57:05 | tls-alpn: |_ http/1.1 1883/tcp open mqtt |_mqtt-subscribe: ERROR: Script execution failed (use -d to debug) 8000/tcp open http Apache httpd 2.4.41 ((Ubuntu)) |_http-open-proxy: Proxy might be redirecting requests |_http-server-header: Apache/2.4.41 (Ubuntu) |_http-title: Site doesn&#39;t have a title (text/html; charset=UTF-8). 9007/tcp open ssl/http Apache httpd 2.4.41 ((Ubuntu)) |_http-generator: WordPress 6.2.2 |_http-server-header: Apache/2.4.41 (Ubuntu) |_http-title: Welcome to my Blog &amp;#8211; I am going to be the best blogger | ssl-cert: Subject: commonName=myblog.thm/organizationName=Internet Widgits Pty Ltd/stateOrProvinceName=Some-State/countryName=US | Not valid before: 2023-07-08T11:01:57 |_Not valid after: 2024-07-07T11:01:57 | tls-alpn: |_ http/1.1 MAC Address: 02:BE:FB:3F:46:9F (Unknown) Aggressive OS guesses: Linux 3.1 (95%), Linux 3.2 (95%), AXIS 210A or 211 Network Camera (Linux 2.6.17) (94%), Linux 3.10 - 3.13 (94%), Linux 3.8 (94%), ASUS RT-N56U WAP (Linux 3.4) (93%), Linux 3.16 (93%), Linux 2.6.32 (92%), Linux 2.6.39 - 3.2 (92%), Linux 3.1 - 3.2 (92%) No exact OS matches for host (test conditions non-ideal). Network Distance: 1 hop Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel TRACEROUTE HOP RTT ADDRESS 1 0.85 ms ip-10-10-205-139.eu-west-1.compute.internal (10.10.205.139) From this i can see that the version of apache running is version 2.4.41. I can aso see that an ftp server is running on port 1338. Additionally an ssl certificate was discoverd with a FQDN of dev.probe.thm. Visiting the https webserver running on port 443 displays a pop up stating that this is a self signed certificate accepting this risk and continuing displays the following.
+" />
+<meta name="keywords" content="" />
+
+  <meta name="robots" content="noodp" />
+
+<link rel="canonical" href="//localhost:1313/posts/2025-07-13-probe/" />
+
+
+
+
+
+  
+  <link rel="stylesheet" href="//localhost:1313/css/buttons.min.86f6b4c106b6c6eb690ae5203d36b442c1f66f718ff4e8164fa86cf6c61ad641.css">
+
+  
+  <link rel="stylesheet" href="//localhost:1313/css/code.min.d529ea4b2fb8d34328d7d31afc5466d5f7bc2f0bc9abdd98b69385335d7baee4.css">
+
+  
+  <link rel="stylesheet" href="//localhost:1313/css/fonts.min.5bb7ed13e1d00d8ff39ea84af26737007eb5051b157b86fc24487c94f3dc8bbe.css">
+
+  
+  <link rel="stylesheet" href="//localhost:1313/css/footer.min.eb8dfc2c6a7eafa36cd3ba92d63e69e849e2200e0002a228d137f236b09ecd75.css">
+
+  
+  <link rel="stylesheet" href="//localhost:1313/css/gist.min.a751e8b0abe1ba8bc53ced52a38b19d8950fe78ca29454ea8c2595cf26aad5c0.css">
+
+  
+  <link rel="stylesheet" href="//localhost:1313/css/header.min.75c7eb0e2872d95ff48109c6647d0223a38db52e2561dd87966eb5fc7c6bdac6.css">
+
+  
+  <link rel="stylesheet" href="//localhost:1313/css/main.min.36833afd348409fc6c3d09d0897c5833d9d5bf1ff31f5e60ea3ee42ce2b1268c.css">
+
+  
+  <link rel="stylesheet" href="//localhost:1313/css/menu.min.3c17467ebeb3d38663dce68f71f519901124fa5cbb4519b2fb0667a21e9aca39.css">
+
+  
+  <link rel="stylesheet" href="//localhost:1313/css/pagination.min.bbb986dbce00a5ce5aca0504b7925fc1c581992a4bf57f163e5d69cc1db7d836.css">
+
+  
+  <link rel="stylesheet" href="//localhost:1313/css/post.min.e6dddd258e64c83e05cec0cd49c05216742d42fc8ecbfbe6b67083412b609bd3.css">
+
+  
+  <link rel="stylesheet" href="//localhost:1313/css/syntax.min.a0773cce9310cb6d8ed23e50f005448facf29a53001b57e038828daa466b25c0.css">
+
+  
+  <link rel="stylesheet" href="//localhost:1313/css/terminal.min.e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.css">
+
+  
+  <link rel="stylesheet" href="//localhost:1313/css/terms.min.b81791663c3790e738e571cdbf802312390d30e4b1d8dc9d814a5b5454d0ac11.css">
+
+
+<link rel="stylesheet" href="//localhost:1313/terminal.css">
+
+
+
+
+<link rel="shortcut icon" href="//localhost:1313/favicon.png">
+<link rel="apple-touch-icon" href="//localhost:1313/apple-touch-icon.png">
+
+
+<meta name="twitter:card" content="summary" />
+
+  
+    <meta name="twitter:site" content="northmatrix.github.io" />
+  
+    <meta name="twitter:creator" content="northmatrix" />
+
+
+
+<meta property="og:locale" content="en" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Probe">
+<meta property="og:description" content="Overview This is an easy rated tryhackme room focused on active and passive enumeration techniques.
+Initial Enumeration I begin with an aggressive nmap scan targeting all ports on the server.
+root@ip-10-10-191-190:~# nmap -sT -T5 -A -p- 10.10.205.139 Starting Nmap 7.80 ( https://nmap.org ) at 2025-07-13 15:24 BST Nmap scan report for ip-10-10-205-139.eu-west-1.compute.internal (10.10.205.139) Host is up (0.00085s latency). Not shown: 65527 closed ports PORT STATE SERVICE VERSION 22/tcp open ssh OpenSSH 8.2p1 Ubuntu 4ubuntu0.7 (Ubuntu Linux; protocol 2.0) 80/tcp open http lighttpd 1.4.55 |_http-server-header: lighttpd/1.4.55 |_http-title: 403 Forbidden 443/tcp open ssl/http Apache httpd 2.4.41 |_http-server-header: Apache/2.4.41 (Ubuntu) |_http-title: 403 Forbidden | ssl-cert: Subject: commonName=dev.probe.thm/organizationName=Tester/stateOrProvinceName=Some-State/countryName=US | Not valid before: 2023-07-18T10:57:05 |_Not valid after: 2024-07-17T10:57:05 | tls-alpn: |_ http/1.1 1338/tcp open ftp vsftpd 2.0.8 or later 1443/tcp open ssl/http Apache httpd 2.4.41 ((Ubuntu)) |_http-server-header: Apache/2.4.41 (Ubuntu) |_http-title: PHP 7.4.3-4ubuntu2.19 - phpinfo() | ssl-cert: Subject: commonName=dev.probe.thm/organizationName=Tester/stateOrProvinceName=Some-State/countryName=US | Not valid before: 2023-07-18T10:57:05 |_Not valid after: 2024-07-17T10:57:05 | tls-alpn: |_ http/1.1 1883/tcp open mqtt |_mqtt-subscribe: ERROR: Script execution failed (use -d to debug) 8000/tcp open http Apache httpd 2.4.41 ((Ubuntu)) |_http-open-proxy: Proxy might be redirecting requests |_http-server-header: Apache/2.4.41 (Ubuntu) |_http-title: Site doesn&#39;t have a title (text/html; charset=UTF-8). 9007/tcp open ssl/http Apache httpd 2.4.41 ((Ubuntu)) |_http-generator: WordPress 6.2.2 |_http-server-header: Apache/2.4.41 (Ubuntu) |_http-title: Welcome to my Blog &amp;#8211; I am going to be the best blogger | ssl-cert: Subject: commonName=myblog.thm/organizationName=Internet Widgits Pty Ltd/stateOrProvinceName=Some-State/countryName=US | Not valid before: 2023-07-08T11:01:57 |_Not valid after: 2024-07-07T11:01:57 | tls-alpn: |_ http/1.1 MAC Address: 02:BE:FB:3F:46:9F (Unknown) Aggressive OS guesses: Linux 3.1 (95%), Linux 3.2 (95%), AXIS 210A or 211 Network Camera (Linux 2.6.17) (94%), Linux 3.10 - 3.13 (94%), Linux 3.8 (94%), ASUS RT-N56U WAP (Linux 3.4) (93%), Linux 3.16 (93%), Linux 2.6.32 (92%), Linux 2.6.39 - 3.2 (92%), Linux 3.1 - 3.2 (92%) No exact OS matches for host (test conditions non-ideal). Network Distance: 1 hop Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel TRACEROUTE HOP RTT ADDRESS 1 0.85 ms ip-10-10-205-139.eu-west-1.compute.internal (10.10.205.139) From this i can see that the version of apache running is version 2.4.41. I can aso see that an ftp server is running on port 1338. Additionally an ssl certificate was discoverd with a FQDN of dev.probe.thm. Visiting the https webserver running on port 443 displays a pop up stating that this is a self signed certificate accepting this risk and continuing displays the following.
+" />
+<meta property="og:url" content="//localhost:1313/posts/2025-07-13-probe/" />
+<meta property="og:site_name" content="northmatrix" />
+
+  <meta property="og:image" content="//localhost:1313/og-image.png">
+
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="627">
+
+  <meta property="article:section" content="tryhackme" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    <script
+  id="MathJax-script"
+  async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"
+></script>
+<script>
+  MathJax = {
+    tex: {
+      displayMath: [
+        ["\\[", "\\]"],
+        ["$$", "$$"],
+      ], 
+      inlineMath: [
+        ["\\(", "\\)"],
+        ["$", "$"],
+      ], 
+    },
+    loader: {
+      load: ["ui/safe"],
+    },
+    chtml: {
+      scale: 1.4,
+    },
+  };
+</script>
+
+  
+  <link rel="stylesheet" href="/css/syntax.css">
+</head>
+<body>
+
+
+<div class="container full">
+
+  <header class="header">
+  <div class="header__inner">
+    <div class="header__logo">
+      <a href="/">
+  <div class="logo">
+    Northmatrix
+  </div>
+</a>
+
+    </div>
+    
+      <ul class="menu menu--mobile">
+  <li class="menu__trigger">Menu&nbsp;▾</li>
+  <li>
+    <ul class="menu__dropdown">
+      
+        
+          <li><a href="/about">About</a></li>
+        
+      
+        
+          <li><a href="/showcase">Showcase</a></li>
+        
+      
+      
+    </ul>
+  </li>
+</ul>
+
+    
+    
+  </div>
+  
+    <nav class="navigation-menu">
+  <ul class="navigation-menu__inner menu--desktop">
+    
+      
+        
+          <li><a href="/about" >About</a></li>
+        
+      
+        
+          <li><a href="/showcase" >Showcase</a></li>
+        
+      
+      
+    
+  </ul>
+</nav>
+
+  
+</header>
+
+
+  <div class="content">
+    
+<article class="post">
+  <h1 class="post-title">
+    <a href="//localhost:1313/posts/2025-07-13-probe/">Probe</a>
+  </h1>
+  <div class="post-meta"><span class="post-author">northmatrix</span><span class="post-reading-time">9 min read (1720 words)</span></div>
+
+  
+  
+
+
+  
+
+  <div class="post-content"><div>
+        <h2 id="overview">Overview<a href="#overview" class="hanchor" ariaLabel="Anchor">#</a> </h2>
+<p>This is an easy rated tryhackme room focused on active and passive enumeration techniques.</p>
+<p><img src="Pasted%20image%2020250713173819.png" alt=""></p>
+<h2 id="initial-enumeration">Initial Enumeration<a href="#initial-enumeration" class="hanchor" ariaLabel="Anchor">#</a> </h2>
+<p>I begin with an aggressive nmap scan targeting all ports on the server.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@ip-10-10-191-190:~# nmap -sT -T5 -A -p- 10.10.205.139
+</span></span><span class="line"><span class="cl">Starting Nmap 7.80 <span class="o">(</span> https://nmap.org <span class="o">)</span> at 2025-07-13 15:24 BST
+</span></span><span class="line"><span class="cl">Nmap scan report <span class="k">for</span> ip-10-10-205-139.eu-west-1.compute.internal <span class="o">(</span>10.10.205.139<span class="o">)</span>
+</span></span><span class="line"><span class="cl">Host is up <span class="o">(</span>0.00085s latency<span class="o">)</span>.
+</span></span><span class="line"><span class="cl">Not shown: <span class="m">65527</span> closed ports
+</span></span><span class="line"><span class="cl">PORT     STATE SERVICE  VERSION
+</span></span><span class="line"><span class="cl">22/tcp   open  ssh      OpenSSH 8.2p1 Ubuntu 4ubuntu0.7 <span class="o">(</span>Ubuntu Linux<span class="p">;</span> protocol 2.0<span class="o">)</span>
+</span></span><span class="line"><span class="cl">80/tcp   open  http     lighttpd 1.4.55
+</span></span><span class="line"><span class="cl"><span class="p">|</span>_http-server-header: lighttpd/1.4.55
+</span></span><span class="line"><span class="cl"><span class="p">|</span>_http-title: <span class="m">403</span> Forbidden
+</span></span><span class="line"><span class="cl">443/tcp  open  ssl/http Apache httpd 2.4.41
+</span></span><span class="line"><span class="cl"><span class="p">|</span>_http-server-header: Apache/2.4.41 <span class="o">(</span>Ubuntu<span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">|</span>_http-title: <span class="m">403</span> Forbidden
+</span></span><span class="line"><span class="cl"><span class="p">|</span> ssl-cert: Subject: <span class="nv">commonName</span><span class="o">=</span>dev.probe.thm/organizationName<span class="o">=</span>Tester/stateOrProvinceName<span class="o">=</span>Some-State/countryName<span class="o">=</span>US
+</span></span><span class="line"><span class="cl"><span class="p">|</span> Not valid before: 2023-07-18T10:57:05
+</span></span><span class="line"><span class="cl"><span class="p">|</span>_Not valid after:  2024-07-17T10:57:05
+</span></span><span class="line"><span class="cl"><span class="p">|</span> tls-alpn: 
+</span></span><span class="line"><span class="cl"><span class="p">|</span>_  http/1.1
+</span></span><span class="line"><span class="cl">1338/tcp open  ftp      vsftpd 2.0.8 or later
+</span></span><span class="line"><span class="cl">1443/tcp open  ssl/http Apache httpd 2.4.41 <span class="o">((</span>Ubuntu<span class="o">))</span>
+</span></span><span class="line"><span class="cl"><span class="p">|</span>_http-server-header: Apache/2.4.41 <span class="o">(</span>Ubuntu<span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">|</span>_http-title: PHP 7.4.3-4ubuntu2.19 - phpinfo<span class="o">()</span>
+</span></span><span class="line"><span class="cl"><span class="p">|</span> ssl-cert: Subject: <span class="nv">commonName</span><span class="o">=</span>dev.probe.thm/organizationName<span class="o">=</span>Tester/stateOrProvinceName<span class="o">=</span>Some-State/countryName<span class="o">=</span>US
+</span></span><span class="line"><span class="cl"><span class="p">|</span> Not valid before: 2023-07-18T10:57:05
+</span></span><span class="line"><span class="cl"><span class="p">|</span>_Not valid after:  2024-07-17T10:57:05
+</span></span><span class="line"><span class="cl"><span class="p">|</span> tls-alpn: 
+</span></span><span class="line"><span class="cl"><span class="p">|</span>_  http/1.1
+</span></span><span class="line"><span class="cl">1883/tcp open  mqtt
+</span></span><span class="line"><span class="cl"><span class="p">|</span>_mqtt-subscribe: ERROR: Script execution failed <span class="o">(</span>use -d to debug<span class="o">)</span>
+</span></span><span class="line"><span class="cl">8000/tcp open  http     Apache httpd 2.4.41 <span class="o">((</span>Ubuntu<span class="o">))</span>
+</span></span><span class="line"><span class="cl"><span class="p">|</span>_http-open-proxy: Proxy might be redirecting requests
+</span></span><span class="line"><span class="cl"><span class="p">|</span>_http-server-header: Apache/2.4.41 <span class="o">(</span>Ubuntu<span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">|</span>_http-title: Site doesn<span class="err">&#39;</span>t have a title <span class="o">(</span>text/html<span class="p">;</span> <span class="nv">charset</span><span class="o">=</span>UTF-8<span class="o">)</span>.
+</span></span><span class="line"><span class="cl">9007/tcp open  ssl/http Apache httpd 2.4.41 <span class="o">((</span>Ubuntu<span class="o">))</span>
+</span></span><span class="line"><span class="cl"><span class="p">|</span>_http-generator: WordPress 6.2.2
+</span></span><span class="line"><span class="cl"><span class="p">|</span>_http-server-header: Apache/2.4.41 <span class="o">(</span>Ubuntu<span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">|</span>_http-title: Welcome to my Blog <span class="p">&amp;</span><span class="c1">#8211; I am going to be the best blogger</span>
+</span></span><span class="line"><span class="cl"><span class="p">|</span> ssl-cert: Subject: <span class="nv">commonName</span><span class="o">=</span>myblog.thm/organizationName<span class="o">=</span>Internet Widgits Pty Ltd/stateOrProvinceName<span class="o">=</span>Some-State/countryName<span class="o">=</span>US
+</span></span><span class="line"><span class="cl"><span class="p">|</span> Not valid before: 2023-07-08T11:01:57
+</span></span><span class="line"><span class="cl"><span class="p">|</span>_Not valid after:  2024-07-07T11:01:57
+</span></span><span class="line"><span class="cl"><span class="p">|</span> tls-alpn: 
+</span></span><span class="line"><span class="cl"><span class="p">|</span>_  http/1.1
+</span></span><span class="line"><span class="cl">MAC Address: 02:BE:FB:3F:46:9F <span class="o">(</span>Unknown<span class="o">)</span>
+</span></span><span class="line"><span class="cl">Aggressive OS guesses: Linux 3.1 <span class="o">(</span>95%<span class="o">)</span>, Linux 3.2 <span class="o">(</span>95%<span class="o">)</span>, AXIS 210A or <span class="m">211</span> Network Camera <span class="o">(</span>Linux 2.6.17<span class="o">)</span> <span class="o">(</span>94%<span class="o">)</span>, Linux 3.10 - 3.13 <span class="o">(</span>94%<span class="o">)</span>, Linux 3.8 <span class="o">(</span>94%<span class="o">)</span>, ASUS RT-N56U WAP <span class="o">(</span>Linux 3.4<span class="o">)</span> <span class="o">(</span>93%<span class="o">)</span>, Linux 3.16 <span class="o">(</span>93%<span class="o">)</span>, Linux 2.6.32 <span class="o">(</span>92%<span class="o">)</span>, Linux 2.6.39 - 3.2 <span class="o">(</span>92%<span class="o">)</span>, Linux 3.1 - 3.2 <span class="o">(</span>92%<span class="o">)</span>
+</span></span><span class="line"><span class="cl">No exact OS matches <span class="k">for</span> host <span class="o">(</span><span class="nb">test</span> conditions non-ideal<span class="o">)</span>.
+</span></span><span class="line"><span class="cl">Network Distance: <span class="m">1</span> hop
+</span></span><span class="line"><span class="cl">Service Info: OS: Linux<span class="p">;</span> CPE: cpe:/o:linux:linux_kernel
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">TRACEROUTE
+</span></span><span class="line"><span class="cl">HOP RTT     ADDRESS
+</span></span><span class="line"><span class="cl"><span class="m">1</span>   0.85 ms ip-10-10-205-139.eu-west-1.compute.internal <span class="o">(</span>10.10.205.139<span class="o">)</span>
+</span></span></code></pre></div><p>From this i can see that the version of apache running is version <em>2.4.41</em>. I can aso see that an ftp server is running on port <em>1338</em>. Additionally an ssl certificate was discoverd with a FQDN of <em>dev.probe.thm</em>. Visiting the https webserver running on port 443 displays a pop up stating that this is a self signed certificate accepting this risk and continuing displays the following.</p>
+<p><img src="Pasted%20image%2020250713155101.png" alt=""></p>
+<p>From here we can click on connection not secure and then more information and then view certificate this will display the following.</p>
+<p><img src="Pasted%20image%2020250713155301.png" alt=""><br>
+We can clearly see now that the email address registerd to the certificate is <a href="mailto:probe@probe.thm">probe@probe.thm</a>. I then began checking out the other ports and found on port 1443 a php version page revealing that the server was running php with extension build of API20190902,NTS.</p>
+<p><img src="Pasted%20image%2020250713160230.png" alt=""></p>
+<p>After this i then connected to the ftp service running on port 1338 i used the below command to achieve this.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@ip-10-10-191-190:~# telnet 10.10.205.139 <span class="m">1338</span>
+</span></span><span class="line"><span class="cl">Trying 10.10.205.139…
+</span></span><span class="line"><span class="cl">Connected to 10.10.205.139.
+</span></span><span class="line"><span class="cl">Escape character is <span class="s1">&#39;^]&#39;</span>.
+</span></span><span class="line"><span class="cl"><span class="m">220</span> THM<span class="o">{</span>WEL********113<span class="o">}</span>
+</span></span></code></pre></div><p>In the FTP banner there was a flag. Now we need to find out what database the server is using to do this i first began looking at nmaps previous output to see if there was anything i missed i found nothing i then used gobuster to scan for directories on each webserver starting with the http server on port 8000. Below is the command i used.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@ip-10-10-191-190:~# gobuster dir -u http://dev.probe.thm:8000 -w /usr/share/wordlists/SecLists/Discovery/Web-Content/common.txt 
+</span></span><span class="line"><span class="cl"><span class="o">===============================================================</span>
+</span></span><span class="line"><span class="cl">Gobuster v3.6
+</span></span><span class="line"><span class="cl">by OJ Reeves <span class="o">(</span>@TheColonial<span class="o">)</span> <span class="p">&amp;</span> Christian Mehlmauer <span class="o">(</span>@firefart<span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="o">===============================================================</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>+<span class="o">]</span> Url:                     http://dev.probe.thm:8000
+</span></span><span class="line"><span class="cl"><span class="o">[</span>+<span class="o">]</span> Method:                  GET
+</span></span><span class="line"><span class="cl"><span class="o">[</span>+<span class="o">]</span> Threads:                 <span class="m">10</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>+<span class="o">]</span> Wordlist:                /usr/share/wordlists/SecLists/Discovery/Web-Content/common.txt
+</span></span><span class="line"><span class="cl"><span class="o">[</span>+<span class="o">]</span> Negative Status codes:   <span class="m">404</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>+<span class="o">]</span> User Agent:              gobuster/3.6
+</span></span><span class="line"><span class="cl"><span class="o">[</span>+<span class="o">]</span> Timeout:                 <span class="nv">10s</span>
+</span></span><span class="line"><span class="cl"><span class="o">===============================================================</span>
+</span></span><span class="line"><span class="cl">Starting gobuster in directory enumeration <span class="nv">mode</span>
+</span></span><span class="line"><span class="cl"><span class="o">===============================================================</span>
+</span></span><span class="line"><span class="cl">/.hta                 <span class="o">(</span>Status: 403<span class="o">)</span> <span class="o">[</span>Size: 280<span class="o">]</span>
+</span></span><span class="line"><span class="cl">/.htaccess            <span class="o">(</span>Status: 403<span class="o">)</span> <span class="o">[</span>Size: 280<span class="o">]</span>
+</span></span><span class="line"><span class="cl">/.htpasswd            <span class="o">(</span>Status: 403<span class="o">)</span> <span class="o">[</span>Size: 280<span class="o">]</span>
+</span></span><span class="line"><span class="cl">/contactus            <span class="o">(</span>Status: 301<span class="o">)</span> <span class="o">[</span>Size: 325<span class="o">]</span> <span class="o">[</span>--&gt; http://dev.probe.thm:8000/contactus/<span class="o">]</span>
+</span></span><span class="line"><span class="cl">/index.php            <span class="o">(</span>Status: 200<span class="o">)</span> <span class="o">[</span>Size: 0<span class="o">]</span>
+</span></span><span class="line"><span class="cl">/javascript           <span class="o">(</span>Status: 301<span class="o">)</span> <span class="o">[</span>Size: 326<span class="o">]</span> <span class="o">[</span>--&gt; http://dev.probe.thm:8000/javascript/<span class="o">]</span>
+</span></span><span class="line"><span class="cl">/phpmyadmin           <span class="o">(</span>Status: 301<span class="o">)</span> <span class="o">[</span>Size: 326<span class="o">]</span> <span class="o">[</span>--&gt; http://dev.probe.thm:8000/phpmyadmin/<span class="o">]</span>
+</span></span><span class="line"><span class="cl">/server-status        <span class="o">(</span>Status: 403<span class="o">)</span> <span class="o">[</span>Size: 280<span class="o">]</span>
+</span></span><span class="line"><span class="cl">Progress: <span class="m">4655</span> / <span class="m">4656</span> <span class="o">(</span>99.98%<span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="o">===============================================================</span>
+</span></span><span class="line"><span class="cl"><span class="nv">Finished</span>
+</span></span><span class="line"><span class="cl"><span class="o">===============================================================</span>
+</span></span></code></pre></div><p>From this list of directories a few things things stood out in particular phpmyadmin this is software that allows you to manage MySQL and MariaDB databases. This is also an answer to one of the questions in the room.</p>
+<p><img src="Pasted%20image%2020250713164119.png" alt=""></p>
+<p>Another thing that stood out was the contactus directory upon visiting this a flag was displayed. After this i began looking through the cms that was running on port 9007 viewing the source of this page i saw lats of mentions of wp and wp-includes this indicates that the CMS being used to host the blog is wordpress. Knowing this i then used wpscan to attempt to enumerate more information on the particular version being run.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@ip-10-10-191-190:~# wpscan --url https://10.10.205.139:9007 --disable-tls-checks
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">_______________________________________________________________
+</span></span><span class="line"><span class="cl">         __          _______   _____
+</span></span><span class="line"><span class="cl">         <span class="se">\ \ </span>       / /  __ <span class="se">\ </span>/ ____<span class="p">|</span>
+</span></span><span class="line"><span class="cl">          <span class="se">\ \ </span> /<span class="se">\ </span> / /<span class="p">|</span> <span class="p">|</span>__<span class="o">)</span> <span class="p">|</span> <span class="o">(</span>___   ___  __ _ _ __ ®
+</span></span><span class="line"><span class="cl">           <span class="se">\ \/</span>  <span class="se">\/</span> / <span class="p">|</span>  ___/ <span class="se">\_</span>__ <span class="se">\ </span>/ __<span class="p">|</span>/ _<span class="sb">`</span> <span class="p">|</span> <span class="s1">&#39;_ \
+</span></span></span><span class="line"><span class="cl"><span class="s1">            \  /\  /  | |     ____) | (__| (_| | | | |
+</span></span></span><span class="line"><span class="cl"><span class="s1">             \/  \/   |_|    |_____/ \___|\__,_|_| |_|
+</span></span></span><span class="line"><span class="cl"><span class="s1">
+</span></span></span><span class="line"><span class="cl"><span class="s1">         WordPress Security Scanner by the WPScan Team
+</span></span></span><span class="line"><span class="cl"><span class="s1">                         Version 3.8.28
+</span></span></span><span class="line"><span class="cl"><span class="s1">       Sponsored by Automattic - https://automattic.com/
+</span></span></span><span class="line"><span class="cl"><span class="s1">       @_WPScan_, @ethicalhack3r, @erwan_lr, @firefart
+</span></span></span><span class="line"><span class="cl"><span class="s1">_______________________________________________________________
+</span></span></span><span class="line"><span class="cl"><span class="s1">
+</span></span></span><span class="line"><span class="cl"><span class="s1">[+] URL: https://10.10.205.139:9007/ [10.10.205.139]
+</span></span></span><span class="line"><span class="cl"><span class="s1">[+] Started: Sun Jul 13 17:00:21 2025
+</span></span></span><span class="line"><span class="cl"><span class="s1">
+</span></span></span><span class="line"><span class="cl"><span class="s1">Interesting Finding(s):
+</span></span></span><span class="line"><span class="cl"><span class="s1">
+</span></span></span><span class="line"><span class="cl"><span class="s1">[+] Headers
+</span></span></span><span class="line"><span class="cl"><span class="s1"> | Interesting Entry: Server: Apache/2.4.41 (Ubuntu)
+</span></span></span><span class="line"><span class="cl"><span class="s1"> | Found By: Headers (Passive Detection)
+</span></span></span><span class="line"><span class="cl"><span class="s1"> | Confidence: 100%
+</span></span></span><span class="line"><span class="cl"><span class="s1">
+</span></span></span><span class="line"><span class="cl"><span class="s1">[+] XML-RPC seems to be enabled: https://10.10.205.139:9007/xmlrpc.php
+</span></span></span><span class="line"><span class="cl"><span class="s1"> | Found By: Direct Access (Aggressive Detection)
+</span></span></span><span class="line"><span class="cl"><span class="s1"> | Confidence: 100%
+</span></span></span><span class="line"><span class="cl"><span class="s1"> | References:
+</span></span></span><span class="line"><span class="cl"><span class="s1"> |  - http://codex.wordpress.org/XML-RPC_Pingback_API
+</span></span></span><span class="line"><span class="cl"><span class="s1"> |  - https://www.rapid7.com/db/modules/auxiliary/scanner/http/wordpress_ghost_scanner/
+</span></span></span><span class="line"><span class="cl"><span class="s1"> |  - https://www.rapid7.com/db/modules/auxiliary/dos/http/wordpress_xmlrpc_dos/
+</span></span></span><span class="line"><span class="cl"><span class="s1"> |  - https://www.rapid7.com/db/modules/auxiliary/scanner/http/wordpress_xmlrpc_login/
+</span></span></span><span class="line"><span class="cl"><span class="s1"> |  - https://www.rapid7.com/db/modules/auxiliary/scanner/http/wordpress_pingback_access/
+</span></span></span><span class="line"><span class="cl"><span class="s1">
+</span></span></span><span class="line"><span class="cl"><span class="s1">[+] WordPress readme found: https://10.10.205.139:9007/readme.html
+</span></span></span><span class="line"><span class="cl"><span class="s1"> | Found By: Direct Access (Aggressive Detection)
+</span></span></span><span class="line"><span class="cl"><span class="s1"> | Confidence: 100%
+</span></span></span><span class="line"><span class="cl"><span class="s1">
+</span></span></span><span class="line"><span class="cl"><span class="s1">[+] The external WP-Cron seems to be enabled: https://10.10.205.139:9007/wp-cron.php
+</span></span></span><span class="line"><span class="cl"><span class="s1"> | Found By: Direct Access (Aggressive Detection)
+</span></span></span><span class="line"><span class="cl"><span class="s1"> | Confidence: 60%
+</span></span></span><span class="line"><span class="cl"><span class="s1"> | References:
+</span></span></span><span class="line"><span class="cl"><span class="s1"> |  - https://www.iplocation.net/defend-wordpress-from-ddos
+</span></span></span><span class="line"><span class="cl"><span class="s1"> |  - https://github.com/wpscanteam/wpscan/issues/1299
+</span></span></span><span class="line"><span class="cl"><span class="s1">
+</span></span></span><span class="line"><span class="cl"><span class="s1">[+] WordPress version 6.2.2 identified (Insecure, released on 2023-05-20).
+</span></span></span><span class="line"><span class="cl"><span class="s1"> | Found By: Emoji Settings (Passive Detection)
+</span></span></span><span class="line"><span class="cl"><span class="s1"> |  - https://10.10.205.139:9007/, Match: &#39;</span>wp-includes<span class="se">\/</span>js<span class="se">\/</span>wp-emoji-release.min.js?ver<span class="o">=</span>6.2.2<span class="s1">&#39;
+</span></span></span><span class="line"><span class="cl"><span class="s1"> | Confirmed By: Meta Generator (Passive Detection)
+</span></span></span><span class="line"><span class="cl"><span class="s1"> |  - https://10.10.205.139:9007/, Match: &#39;</span>WordPress 6.2.2<span class="s1">&#39;
+</span></span></span><span class="line"><span class="cl"><span class="s1">
+</span></span></span><span class="line"><span class="cl"><span class="s1">[+] WordPress theme in use: twentytwentythree
+</span></span></span><span class="line"><span class="cl"><span class="s1"> | Location: https://10.10.205.139:9007/wp-content/themes/twentytwentythree/
+</span></span></span><span class="line"><span class="cl"><span class="s1"> | Last Updated: 2024-11-13T00:00:00.000Z
+</span></span></span><span class="line"><span class="cl"><span class="s1"> | Readme: https://10.10.205.139:9007/wp-content/themes/twentytwentythree/readme.txt
+</span></span></span><span class="line"><span class="cl"><span class="s1"> | [!] The version is out of date, the latest version is 1.6
+</span></span></span><span class="line"><span class="cl"><span class="s1"> | [!] Directory listing is enabled
+</span></span></span><span class="line"><span class="cl"><span class="s1"> | Style URL: https://10.10.205.139:9007/wp-content/themes/twentytwentythree/style.css
+</span></span></span><span class="line"><span class="cl"><span class="s1"> | Style Name: Twenty Twenty-Three
+</span></span></span><span class="line"><span class="cl"><span class="s1"> | Style URI: https://wordpress.org/themes/twentytwentythree
+</span></span></span><span class="line"><span class="cl"><span class="s1"> | Description: Twenty Twenty-Three is designed to take advantage of the new design tools introduced in WordPress 6....
+</span></span></span><span class="line"><span class="cl"><span class="s1"> | Author: the WordPress team
+</span></span></span><span class="line"><span class="cl"><span class="s1"> | Author URI: https://wordpress.org
+</span></span></span><span class="line"><span class="cl"><span class="s1"> |
+</span></span></span><span class="line"><span class="cl"><span class="s1"> | Found By: Urls In Homepage (Passive Detection)
+</span></span></span><span class="line"><span class="cl"><span class="s1"> |
+</span></span></span><span class="line"><span class="cl"><span class="s1"> | Version: 1.1 (80% confidence)
+</span></span></span><span class="line"><span class="cl"><span class="s1"> | Found By: Style (Passive Detection)
+</span></span></span><span class="line"><span class="cl"><span class="s1"> |  - https://10.10.205.139:9007/wp-content/themes/twentytwentythree/style.css, Match: &#39;</span>Version: 1.1<span class="err">&#39;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">[</span>+<span class="o">]</span> Enumerating All Plugins <span class="o">(</span>via Passive Methods<span class="o">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">[</span>i<span class="o">]</span> No plugins Found.
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">[</span>+<span class="o">]</span> Enumerating Config Backups <span class="o">(</span>via Passive and Aggressive Methods<span class="o">)</span>
+</span></span><span class="line"><span class="cl"> Checking Config Backups - Time: 00:00:00 &lt;<span class="o">====================================================================================================================================</span>&gt; <span class="o">(</span><span class="m">137</span> / 137<span class="o">)</span> 100.00% Time: 00:00:00
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">[</span>i<span class="o">]</span> No Config Backups Found.
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">[</span>!<span class="o">]</span> No WPScan API Token given, as a result vulnerability data has not been output.
+</span></span><span class="line"><span class="cl"><span class="o">[</span>!<span class="o">]</span> You can get a free API token with <span class="m">25</span> daily requests by registering at https://wpscan.com/register
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">[</span>+<span class="o">]</span> Finished: Sun Jul <span class="m">13</span> 17:00:31 <span class="m">2025</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>+<span class="o">]</span> Requests Done: <span class="m">168</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>+<span class="o">]</span> Cached Requests: <span class="m">5</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>+<span class="o">]</span> Data Sent: 43.934 KB
+</span></span><span class="line"><span class="cl"><span class="o">[</span>+<span class="o">]</span> Data Received: 197.085 KB
+</span></span><span class="line"><span class="cl"><span class="o">[</span>+<span class="o">]</span> Memory used: 270.57 MB
+</span></span><span class="line"><span class="cl"><span class="o">[</span>+<span class="o">]</span> Elapsed time: 00:00:09
+</span></span></code></pre></div><p>From this we can see it is running wordpress version 6.2.2. Now we need to find the username of the admin by looking at their archive page this will request the user with the id of 1&rsquo;s archive page. <code>https://10.10.205.139:9001/?author=1</code>.</p>
+<p><img src="Pasted%20image%2020250713170832.png" alt=""></p>
+<p>From here we can clearly see his username joomla. The next question asks us what file was detected during vulnerability scanning that can be used to identify the blogging site software with id OSVDB-3092. To do this we will need to use nikto.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@ip-10-10-219-8:~/nikto-master/program# perl nikto.pl -h https://10.10.205.139:9007
+</span></span><span class="line"><span class="cl">- Nikto v2.5.0
+</span></span><span class="line"><span class="cl">---------------------------------------------------------------------------
+</span></span><span class="line"><span class="cl">+ Target IP:          10.10.205.139
+</span></span><span class="line"><span class="cl">+ Target Hostname:    10.10.205.139
+</span></span><span class="line"><span class="cl">+ Target Port:        <span class="m">9007</span>
+</span></span><span class="line"><span class="cl">---------------------------------------------------------------------------
+</span></span><span class="line"><span class="cl">+ SSL Info:           Subject:  /C<span class="o">=</span>US/ST<span class="o">=</span>Some-State/O<span class="o">=</span>Internet Widgits Pty Ltd/CN<span class="o">=</span>myblog.thm/emailAddress<span class="o">=</span>dev@myblog.thm
+</span></span><span class="line"><span class="cl">                      Ciphers:  TLS_AES_256_GCM_SHA384
+</span></span><span class="line"><span class="cl">                      Issuer:   /C<span class="o">=</span>US/ST<span class="o">=</span>Some-State/O<span class="o">=</span>Internet Widgits Pty Ltd/CN<span class="o">=</span>myblog.thm/emailAddress<span class="o">=</span>dev@myblog.thm
+</span></span><span class="line"><span class="cl">+ Start Time:         2025-07-13 17:29:59 <span class="o">(</span>GMT1<span class="o">)</span>
+</span></span><span class="line"><span class="cl">---------------------------------------------------------------------------
+</span></span><span class="line"><span class="cl">+ Server: Apache/2.4.41 <span class="o">(</span>Ubuntu<span class="o">)</span>
+</span></span><span class="line"><span class="cl">+ /: Link header<span class="o">(</span>s<span class="o">)</span> found with value<span class="o">(</span>s<span class="o">)</span>: &lt;https://myblog.thm:9007/index.php?rest_route<span class="o">=</span>/&gt;<span class="p">;</span> <span class="nv">rel</span><span class="o">=</span><span class="s2">&#34;https://api.w.org/&#34;</span>. See: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Link
+</span></span><span class="line"><span class="cl">+ /: The site uses TLS and the Strict-Transport-Security HTTP header is not defined. See: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Strict-Transport-Security
+</span></span><span class="line"><span class="cl">+ /: The X-Content-Type-Options header is not set. This could allow the user agent to render the content of the site in a different fashion to the MIME type. See: https://www.netsparker.com/web-vulnerability-scanner/vulnerabilities/missing-content-type-header/
+</span></span><span class="line"><span class="cl">+ /index.php?: Uncommon header<span class="o">(</span>s<span class="o">)</span> <span class="s1">&#39;x-redirect-by&#39;</span> found, with contents: WordPress.
+</span></span><span class="line"><span class="cl">+ No CGI Directories found <span class="o">(</span>use <span class="s1">&#39;-C all&#39;</span> to force check all possible <span class="nb">dirs</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl">+ /: The Content-Encoding header is <span class="nb">set</span> to <span class="s2">&#34;deflate&#34;</span> which may mean that the server is vulnerable to the BREACH attack. See: http://breachattack.com/
+</span></span><span class="line"><span class="cl">+ /: Suggested security header missing: content-security-policy. See: https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP
+</span></span><span class="line"><span class="cl">+ /: Suggested security header missing: permissions-policy. See: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Permissions-Policy
+</span></span><span class="line"><span class="cl">+ /: Suggested security header missing: x-content-type-options. See: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Content-Type-Options
+</span></span><span class="line"><span class="cl">+ /: Suggested security header missing: strict-transport-security. See: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Strict-Transport-Security
+</span></span><span class="line"><span class="cl">+ /: Suggested security header missing: referrer-policy. See: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Referrer-Policy
+</span></span><span class="line"><span class="cl">+ Apache/2.4.41 appears to be outdated <span class="o">(</span>current is at least 2.4.63<span class="o">)</span>. Apache 2.2.34 is the EOL <span class="k">for</span> the 2.x branch.
+</span></span><span class="line"><span class="cl">+ Hostname <span class="s1">&#39;10.10.205.139&#39;</span> does not match certificate<span class="s1">&#39;s names: myblog.thm. See: https://cwe.mitre.org/data/definitions/297.html
+</span></span></span><span class="line"><span class="cl"><span class="s1">+ /: Web Server returns a valid response with junk HTTP methods which may cause false positives.
+</span></span></span><span class="line"><span class="cl"><span class="s1">+ /phpmyadmin/changelog.php: Cookie goto_https created without the httponly flag. See: https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies
+</span></span></span><span class="line"><span class="cl"><span class="s1">+ /phpmyadmin/changelog.php: Cookie back_https created without the httponly flag. See: https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies
+</span></span></span><span class="line"><span class="cl"><span class="s1">+ /phpmyadmin/changelog.php:X-Frame-Options header is deprecated and was replaced with the Content-Security-Policy HTTP header with the frame-ancestors directive instead. See: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Frame-Options
+</span></span></span><span class="line"><span class="cl"><span class="s1">+ /phpmyadmin/changelog.php: Uncommon header(s) &#39;</span>x-ob_mode<span class="err">&#39;</span> found, with contents: 1.
+</span></span><span class="line"><span class="cl">+ /wp-links-opml.php: This WordPress script reveals the installed version.
+</span></span><span class="line"><span class="cl">+ /license.txt: License file found may identify site software.
+</span></span><span class="line"><span class="cl">+ /: A Wordpress installation was found.
+</span></span><span class="line"><span class="cl">+ /phpmyadmin/: phpMyAdmin directory found.
+</span></span><span class="line"><span class="cl">+ /wp-login.php?action<span class="o">=</span>register: Cookie wordpress_test_cookie created without the httponly flag. See: https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies
+</span></span><span class="line"><span class="cl">+ /wp-login.php: Wordpress login found.
+</span></span><span class="line"><span class="cl">+ <span class="m">8084</span> requests: <span class="m">0</span> error<span class="o">(</span>s<span class="o">)</span> and <span class="m">23</span> item<span class="o">(</span>s<span class="o">)</span> reported on remote host
+</span></span><span class="line"><span class="cl">+ End Time:           2025-07-13 17:30:56 <span class="o">(</span>GMT1<span class="o">)</span> <span class="o">(</span><span class="m">57</span> seconds<span class="o">)</span>
+</span></span><span class="line"><span class="cl">---------------------------------------------------------------------------
+</span></span><span class="line"><span class="cl">+ <span class="m">1</span> host<span class="o">(</span>s<span class="o">)</span> tested
+</span></span></code></pre></div><p>Now unfortunately it does link to the osvdb code but we can see from this line <code>+ /license.txt: License file found may identify site software.</code> that the file the question asks for is license.txt. osvdb is no longer active.</p>
+<p>The final question asks what is the name of the software beging used on the standard http port this can be seen from our initial nmap scan as lighttpd.</p>
+
+      </div></div>
+
+  
+    
+<div class="pagination">
+  <div class="pagination__title">
+    <span class="pagination__title-h">Read other posts</span>
+    <hr />
+  </div>
+  <div class="pagination__buttons">
+    
+      <a href="//localhost:1313/posts/2025-08-04-order/" class="button inline prev">
+        &lt; [<span class="button__text">Order</span>]
+      </a>
+    
+    
+      ::
+    
+    
+      <a href="//localhost:1313/posts/2025-07-13-rabbit-store/" class="button inline next">
+         [<span class="button__text">Rabbit Store</span>] &gt;
+      </a>
+    
+  </div>
+</div>
+
+
+  
+
+  
+    
+
+  
+</article>
+
+  </div>
+
+  
+    <footer class="footer">
+  <div class="footer__inner">
+    
+      <div class="copyright">
+        <span>© 2025 Powered by <a href="https://gohugo.io">Hugo</a></span>
+    
+      <span>:: <a href="https://github.com/panr/hugo-theme-terminal" target="_blank">Theme</a> made by <a href="https://github.com/panr" target="_blank">panr</a></span>
+      </div>
+  </div>
+</footer>
+
+
+
+
+
+
+<script type="text/javascript" src="/bundle.min.js"></script>
+
+
+
+
+
+  
+</div>
+
+</body>
+</html>

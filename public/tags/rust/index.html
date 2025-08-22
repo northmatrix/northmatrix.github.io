@@ -69,7 +69,7 @@
 <meta name="twitter:card" content="summary" />
 
   
-    <meta name="twitter:site" content="northmatrix.co.uk" />
+    <meta name="twitter:site" content="northmatrix.github.io" />
   
     <meta name="twitter:creator" content="" />
 
@@ -101,26 +101,40 @@
 
 
 
-
-    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+  
+    <script
+  id="MathJax-script"
+  async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"
+></script>
 <script>
   MathJax = {
     tex: {
-      displayMath: [['\\[', '\\]'], ['$$', '$$']],  
-      inlineMath: [['\\(', '\\)']]                  
+      displayMath: [
+        ["\\[", "\\]"],
+        ["$$", "$$"],
+      ], 
+      inlineMath: [
+        ["\\(", "\\)"],
+        ["$", "$"],
+      ], 
     },
-    loader:{
-      load: ['ui/safe']
+    loader: {
+      load: ["ui/safe"],
+    },
+    chtml: {
+      scale: 1.0,
     },
   };
 </script>
 
   
+  <link rel="stylesheet" href="/css/syntax.css">
 </head>
 <body>
 
 
-<div class="container full">
+<div class="container center">
 
   <header class="header">
   <div class="header__inner">
@@ -184,38 +198,36 @@
     
       <article class="post on-list">
         <h1 class="post-title">
-          <a href="//localhost:1313/posts/my-second-post/">My Second Post</a>
+          <a href="//localhost:1313/posts/aes-ecb-rust-implementation/">AES ECB Implemented In Rust</a>
         </h1>
-        <div class="post-meta"><time class="post-date">2025-08-20</time><span class="post-author">Northmatrix</span></div>
+        <div class="post-meta"><time class="post-date">2025-08-19</time><span class="post-author">Northmatrix</span></div>
 
         
           <span class="post-tags">
             
-            #<a href="//localhost:1313/tags/math/">math</a>&nbsp;
+            #<a href="//localhost:1313/tags/crypto/">Crypto</a>&nbsp;
             
-            #<a href="//localhost:1313/tags/rust/">rust</a>&nbsp;
+            #<a href="//localhost:1313/tags/rust/">Rust</a>&nbsp;
             
           </span>
         
 
         
+  <img src="/posts/aes-ecb-rust-implementation/cover.webp"
+    class="post-cover"
+    alt="AES ECB Implemented In Rust"
+    title="Cover Image" />
 
 
         <div class="post-content">
           
-            <h2 id="this-is-the-title">This is the title</h2>
-$$
-\begin{bmatrix}
-1 & 2 \\
-3 & 4
-\end{bmatrix}
-$$
+            <p>128 Bit AES EBC Implemented in the rust programming language</p>
           
         </div>
 
         
           <div>
-            <a class="read-more button inline" href="/posts/my-second-post/">[Read more]</a>
+            <a class="read-more button inline" href="/posts/aes-ecb-rust-implementation/">[Read more]</a>
           </div>
         
       </article>

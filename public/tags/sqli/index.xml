@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Sqli on northmatrix</title>
+    <link>//localhost:1313/tags/sqli/</link>
+    <description>Recent content in Sqli on northmatrix</description>
+    <generator>Hugo</generator>
+    <language>en</language>
+    <atom:link href="//localhost:1313/tags/sqli/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Daily Bugle</title>
+      <link>//localhost:1313/posts/2025-07-09-daily-bugle/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>//localhost:1313/posts/2025-07-09-daily-bugle/</guid>
+      <description>&lt;h2 id=&#34;overview&#34;&gt;Overview&lt;/h2&gt;&#xA;&lt;p&gt;Daily Bugle is a Spider-Man-themed TryHackMe room where the objective is to gain root access to a target server running a vulnerable Joomla CMS. The challenge focuses on web enumeration, CMS exploitation, and privilege escalation.&lt;/p&gt;&#xA;&lt;p&gt;&lt;img src=&#34;daily-bugle-card.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;&#xA;&lt;h2 id=&#34;enumeration&#34;&gt;Enumeration&lt;/h2&gt;&#xA;&lt;p&gt;As always i begin by running an nmap scan against the target machine specifying that all ports should be scanned and to run the&lt;br&gt;&#xA;scan at &lt;em&gt;insane&lt;/em&gt; speed using the full TCP handshake.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Game Zone</title>
+      <link>//localhost:1313/posts/2025-07-07-game-zone/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>//localhost:1313/posts/2025-07-07-game-zone/</guid>
+      <description>&lt;h2 id=&#34;overview&#34;&gt;Overview&lt;/h2&gt;&#xA;&lt;p&gt;GameZone is a Hitman themed TryHackMe room focused on exploiting SQL injection vulnerabilities, cracking password hashes, tunneling services via reverse SSH, and ultimately achieving root through Webmin RCE. Note that all parts except the last of this CTF are guided.&lt;/p&gt;&#xA;&lt;p&gt;&lt;img src=&#34;Pasted%20image%2020250710010218.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;&#xA;&lt;h2 id=&#34;obtaining-access&#34;&gt;Obtaining Access&lt;/h2&gt;&#xA;&lt;p&gt;We are tasked with gaining access to restricted part of web page.&lt;/p&gt;&#xA;&lt;p&gt;We have been told that the username and password form uses a SQL query to validate login authenticity.&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

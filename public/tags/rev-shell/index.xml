@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Rev-Shell on northmatrix</title>
+    <link>//localhost:1313/tags/rev-shell/</link>
+    <description>Recent content in Rev-Shell on northmatrix</description>
+    <generator>Hugo</generator>
+    <language>en</language>
+    <atom:link href="//localhost:1313/tags/rev-shell/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Daily Bugle</title>
+      <link>//localhost:1313/posts/2025-07-09-daily-bugle/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>//localhost:1313/posts/2025-07-09-daily-bugle/</guid>
+      <description>&lt;h2 id=&#34;overview&#34;&gt;Overview&lt;/h2&gt;&#xA;&lt;p&gt;Daily Bugle is a Spider-Man-themed TryHackMe room where the objective is to gain root access to a target server running a vulnerable Joomla CMS. The challenge focuses on web enumeration, CMS exploitation, and privilege escalation.&lt;/p&gt;&#xA;&lt;p&gt;&lt;img src=&#34;daily-bugle-card.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;&#xA;&lt;h2 id=&#34;enumeration&#34;&gt;Enumeration&lt;/h2&gt;&#xA;&lt;p&gt;As always i begin by running an nmap scan against the target machine specifying that all ports should be scanned and to run the&lt;br&gt;&#xA;scan at &lt;em&gt;insane&lt;/em&gt; speed using the full TCP handshake.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>mKingdom</title>
+      <link>//localhost:1313/posts/2025-07-13-mkingdom/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>//localhost:1313/posts/2025-07-13-mkingdom/</guid>
+      <description>&lt;h2 id=&#34;overview&#34;&gt;Overview&lt;/h2&gt;&#xA;&lt;p&gt;mKingdom is an easy rated TryHackMe room focused on privilege escalation.&lt;/p&gt;&#xA;&lt;p&gt;&lt;img src=&#34;Pasted%20image%2020250713125235.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;&#xA;&lt;h2 id=&#34;initial-enumeration&#34;&gt;Initial Enumeration&lt;/h2&gt;&#xA;&lt;p&gt;I begin with an namp scan against the target.&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;root@ip-10-10-73-173:~# nmap -T5 -p- 10.10.63.127&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Starting Nmap 7.80 &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt; https://nmap.org &lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; at 2025-07-13 01:59 BST&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Nmap scan report &lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; ip-10-10-63-127.eu-west-1.compute.internal &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;10.10.63.127&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Host is up &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;0.00031s latency&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;.&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Not shown: &lt;span class=&#34;m&#34;&gt;65534&lt;/span&gt; closed ports&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;PORT   STATE SERVICE&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;85/tcp open  mit-ml-dev&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;MAC Address: 02:87:BD:95:3E:13 &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;Unknown&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Nmap &lt;span class=&#34;k&#34;&gt;done&lt;/span&gt;: &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt; IP address &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;1&lt;/span&gt; host up&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; scanned in 2.10 seconds&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;From this i can see that only 1 port is open, port 86. After visiting this i see it is a webserver and i am greeted with an image of bowser.&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

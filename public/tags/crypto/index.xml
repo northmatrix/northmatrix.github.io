@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Crypto on northmatrix</title>
+    <link>//localhost:1313/tags/crypto/</link>
+    <description>Recent content in Crypto on northmatrix</description>
+    <generator>Hugo</generator>
+    <language>en</language>
+    <lastBuildDate>Tue, 19 Aug 2025 23:26:01 +0100</lastBuildDate>
+    <atom:link href="//localhost:1313/tags/crypto/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>AES ECB Implemented In Rust</title>
+      <link>//localhost:1313/posts/aes-ecb-rust-implementation/</link>
+      <pubDate>Tue, 19 Aug 2025 23:26:01 +0100</pubDate>
+      <guid>//localhost:1313/posts/aes-ecb-rust-implementation/</guid>
+      <description>&lt;h2 id=&#34;aes-in-rust&#34;&gt;AES in Rust&lt;/h2&gt;&#xA;&lt;h3 id=&#34;intro&#34;&gt;Intro&lt;/h3&gt;&#xA;&lt;p&gt;AES (advanced encryption standard) also known as Rijndael is a specification for the encryption of electronic data established by the US National institute of standards and technology NIST in 2001.&lt;br&gt;&#xA;AES is a block cipher with a block size of 128 bits that supports 3 key sizes of length 128,192 and 256 bits.&lt;br&gt;&#xA;AES is used everywhere in information technology from SSH to HTTPS&lt;/p&gt;&#xA;&lt;h3 id=&#34;project-goal&#34;&gt;Project Goal&lt;/h3&gt;&#xA;&lt;p&gt;In this tutorial we will be implementing 128 bit Aes encryption&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

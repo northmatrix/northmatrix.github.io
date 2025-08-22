@@ -21,7 +21,7 @@ pagination.pagerSize = 5
   showLanguageSelector = false
 
   # set theme to full screen width
-  fullWidthTheme = true
+  fullWidthTheme = false
 
   # center theme with default width
   centerTheme = true
@@ -121,6 +121,8 @@ pagination.pagerSize = 5
           block = [['\[', '\]'], ['$$', '$$']]
           inline = [['\(', '\)']]
 
+    [markup.goldmark.renderer]
+       unsafe = true
 
 [module]
   # In case you would like to make changes to the theme and keep it locally in you repository,

