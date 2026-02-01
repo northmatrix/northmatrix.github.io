@@ -4,13 +4,6 @@ draft: false
 title: 'My First Post'
 ---
 
-# This is just a demo post
+# Demo
 
-I wonder if LaTex works here.
-
-$x=4$
-
-# Interesting
-
-1. hi
-2. goodbye
+This is just a simple demo post
